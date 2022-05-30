@@ -102,20 +102,20 @@ DOCUMENTATION = r"""
       type: int
       required: False
       default: 0
-    provider:
-      description: Definition of the Men&Mice suite API provider.
+    mm_provider:
+      description: Definition of the Men&Mice suite API mm_provider.
       type: dict
       required: True
       suboptions:
-        mmurl:
+        mm_url:
           description: Men&Mice API server to connect to.
           required: True
           type: str
-        user:
+        mm_user:
           description: userid to login with into the API.
           required: True
           type: str
-        password:
+        mm_password:
           description: password to login with into the API.
           required: True
           type: str
@@ -130,10 +130,10 @@ EXAMPLES = r"""
     data: 172.16.17.2
     rrtype: A
     dnszone: example.net.
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 
 - name: Set PTR record in zone for a defined name
@@ -143,10 +143,10 @@ EXAMPLES = r"""
     data: beatles.example.net.
     rrtype: PTR
     dnszone: "17.16.172.in-addr.arpa."
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 
 - name: Set MX record
@@ -157,10 +157,10 @@ EXAMPLES = r"""
     dnszone: example.net.
     data: "10 ringo"
     ttl: 86400
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 """
 
@@ -222,13 +222,13 @@ def run_module():
         aging=dict(type="int", required=False, default=0),
         dnszone=dict(type="str", required=True),
         rrtype=dict(type="str", required=False, default="A", choices=RRTYPES),
-        provider=dict(
+        mm_provider=dict(
             type="dict",
             required=True,
             options=dict(
-                mmurl=dict(type="str", required=True, no_log=False),
-                user=dict(type="str", required=True, no_log=False),
-                password=dict(type="str", required=True, no_log=True),
+                mm_url=dict(type="str", required=True, no_log=False),
+                mm_user=dict(type="str", required=True, no_log=False),
+                mm_password=dict(type="str", required=True, no_log=True),
             ),
         ),
     )
@@ -253,8 +253,8 @@ def run_module():
         module.exit_json(**result)
 
     # Get all API settings
-    provider = module.params["provider"]
-    display.vvv(provider)
+    mm_provider = module.params["mm_provider"]
+    display.vvv(mm_provider)
 
     # Get the data field and make it tabbed when needed
     rrname = module.params.get("name").strip()
@@ -270,7 +270,7 @@ def run_module():
 
     # Try to get all name of DNS Zone info
     refs = "DNSZones?filter=%s" % rrzone
-    zoneresp = get_single_refs(refs, provider)
+    zoneresp = get_single_refs(refs, mm_provider)
     if zoneresp.get("totalResults", 1) == 0:
         # Zone does not exists
         module.fail_json(msg="DNS Zone '%s' does not exist" % rrzone)
@@ -298,7 +298,7 @@ def run_module():
         rrdata,
     )
     refs = refs.replace(" ", "%20").replace("\t", "\\t")
-    iparesp = get_single_refs(refs, provider)
+    iparesp = get_single_refs(refs, mm_provider)
 
     # It could be that the result is empty. This sometimes happens when
     # a record is stored with just the name and not the FQDN. This depends on
@@ -313,7 +313,7 @@ def run_module():
             rrdata,
         )
         refs = refs.replace(" ", "%20").replace("\t", "\\t")
-        iparesp = get_single_refs(refs, provider)
+        iparesp = get_single_refs(refs, mm_provider)
 
     # If more then one result was found
     if iparesp.get("totalResults", 1) > 1:
@@ -334,7 +334,7 @@ def run_module():
         http_method = "DELETE"
         url = "%s" % iparesp["dnsRecords"][0]["ref"]
         databody = {"saveComment": "Ansible API"}
-        result = doapi(url, http_method, provider, databody)
+        result = doapi(url, http_method, mm_provider, databody)
         module.exit_json(**result)
 
     # Come here the DNS record should be present
@@ -377,7 +377,7 @@ def run_module():
         if module.params.get("ttl"):
             databody["dnsRecords"][0]["ttl"] = str(module.params.get("ttl"))
 
-        result = doapi(url, http_method, provider, databody)
+        result = doapi(url, http_method, mm_provider, databody)
         # When an IP address has status 'claimed', it cannot be assigned a
         # DNS record. The 'errors' field shows this.
         if result["message"]["result"]["errors"]:

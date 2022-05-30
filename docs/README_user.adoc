@@ -11,7 +11,7 @@ Manage user accounts and user properties on Men&Mice Micetro
 - `groups`: Make the user a member of these groups.
 - `name`: (required) Name of the user to create, remove or modify.
 - `password`: Users password (plaintext). Required if `state=present`.
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 - `roles`: Make the user a member of these roles.
 - `state`: Should the users account exist or not. (`absent`, `present`)
 
@@ -35,13 +35,13 @@ Manage user accounts and user properties on Men&Mice Micetro
         - User Administrators (built-in)
         - Approvers (built-in)
         - Requesters (built-in)
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 
 - name: Remove user 'johnd'
   ansilabnl.micetro.user:
     username: johnd
     state: absent
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 ----

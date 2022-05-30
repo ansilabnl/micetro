@@ -39,20 +39,20 @@ DOCUMENTATION = r"""
         which will result in the record values being returned as a list
         over which you can iterate later on (or use C(query) instead)
     options:
-      provider:
-        description: Definition of the Men&Mice suite API provider
+      mm_provider:
+        description: Definition of the Men&Mice suite API mm_provider
         type: dict
         required: True
         suboptions:
-          mmurl:
+          mm_url:
             description: Men&Mice API server to connect to
             required: True
             type: str
-          user:
+          mm_user:
             description: userid to login with into the API
             required: True
             type: str
-          password:
+          mm_password:
             description: password to login with into the API
             required: True
             type: str
@@ -103,32 +103,32 @@ DOCUMENTATION = r"""
 EXAMPLES = r"""
 - name: get the first free IP address in a zone
   debug:
-    msg: "This is the next free IP: {{ lookup('ansilabnl.micetro.freeip', provider, network) }}"
+    msg: "This is the next free IP: {{ lookup('ansilabnl.micetro.freeip', mm_provider, network) }}"
   vars:
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
     network: examplenet
 
 - name: get the first free IP addresses in multiple zones
   debug:
-    msg: "This is the next free IP: {{ query('ansilabnl.micetro.freeip', provider, network, multi=5, claim=60) }}"
+    msg: "This is the next free IP: {{ query('ansilabnl.micetro.freeip', mm_provider, network, multi=5, claim=60) }}"
   vars:
-    mmurl: http://mmsuite.example.net
-    user: apiuser
-    passwd: apipasswd
+    mm_url: http://mmsuite.example.net
+    mm_user: apiuser
+    mm_passwd: apipasswd
     network:
       - examplenet
       - examplecom
 
   - name: get the first free IP address in a zone and ping
     debug:
-      msg: "This is the next free IP: {{ query('ansilabnl.micetro.freeip', provider, network, ping=True) }}"
+      msg: "This is the next free IP: {{ query('ansilabnl.micetro.freeip', mm_provider, network, ping=True) }}"
     vars:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      passwd: apipasswd
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_passwd: apipasswd
       network: examplenet
 """
 
@@ -149,7 +149,7 @@ class LookupModule(LookupBase):
     def run(self, terms, variables=None, **kwargs):
         """Variabele terms contains a list with supplied parameters.
 
-        - provider -> Definition of the Men&Mice suite API provider
+        - mm_provider -> Definition of the Men&Mice suite API mm_provider
         - Network  -> The zone from which the free IP address(es) are found
                       Either: CIDR notation, network notation or network name
                       e.g. 172.16.17.0/24 or 172.16.17.0 or examplenet
@@ -158,11 +158,11 @@ class LookupModule(LookupBase):
         # Sufficient parameters
         if len(terms) < 2:
             raise AnsibleError(
-                "Insufficient parameters. Need at least: provider and network(s)."
+                "Insufficient parameters. Need at least: mm_provider and network(s)."
             )
 
         # Get the parameters
-        provider = terms[0]
+        mm_provider = terms[0]
         if isinstance(terms[1], str):
             networks = [str(terms[1]).strip()]
         else:
@@ -184,7 +184,7 @@ class LookupModule(LookupBase):
             http_method = "GET"
             url = "Ranges"
             databody = {"filter": network}
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
 
             # Some ranges found? If the network does not exist or when there
             # are no more IPs available an empty list is returned
@@ -238,7 +238,7 @@ class LookupModule(LookupBase):
 
             # Get requested number of free IP addresses
             for dummy in range(multi):
-                result = doapi(url, http_method, provider, databody)
+                result = doapi(url, http_method, mm_provider, databody)
                 display.vvv("loopanswer  = |%s|" % result)
 
                 # If there are no more free IP Addresses, the API returns

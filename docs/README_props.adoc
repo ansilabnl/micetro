@@ -14,7 +14,7 @@ Manage custom properties in Men&Mice Micetro
 - `proptype`: Type of the property. These are not the types as described
   in the API, but the types as you can see them in the Men&Mice Management
   Console.
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 - `readonly`: Is the property read only.
 - `state`: The state of the properties or properties. (`absent`,
   `present`)
@@ -33,6 +33,6 @@ Manage custom properties in Men&Mice Micetro
     state: present
     proptype: text
     dest: zone
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 ----

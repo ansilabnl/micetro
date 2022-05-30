@@ -13,7 +13,7 @@ Manage DHCP reservations on Men&Mice Micetro
 - `macaddress`: (required) MAC address for the IP address.
 - `name`: (required) Name of the reservation
 - `nextserver`: Next server as DHCP option (bootp).
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 - `servername`: Server to place the entry in.
 - `state`: The state of the reservation. (`absent`, `present`)
 
@@ -28,6 +28,6 @@ Manage DHCP reservations on Men&Mice Micetro
     name: myreservation
     ipaddress: 172.16.17.8
     macaddress: 44:55:66:77:88:99
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 ----

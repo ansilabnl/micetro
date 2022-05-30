@@ -1,8 +1,8 @@
 ---
 plugin: ansilabnl.micetro.inventory
-host: "http://web.mmdemo.net"
-user: "ton"
-password: "4ton!"
+mm_url: "http://web.mmdemo.net"
+mm_user: "ton"
+mm_password: "4ton!"
 
 # filters:
 #   - location: home

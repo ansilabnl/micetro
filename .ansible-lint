@@ -5,6 +5,7 @@ exclude_paths:
   - .github/
   - .tox/
   - plugins/
+  - play_tests/
   - meta/
   - galaxy.yml
 

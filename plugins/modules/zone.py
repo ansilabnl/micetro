@@ -95,20 +95,20 @@ DOCUMENTATION = r"""
       seealso: See also M(mm_props)
       type: dict
       required: False
-    provider:
-      description: Definition of the Men&Mice suite API provider.
+    mm_provider:
+      description: Definition of the Men&Mice suite API mm_provider.
       type: dict
       required: True
       suboptions:
-        mmurl:
+        mm_url:
           description: Men&Mice API server to connect to.
           required: True
           type: str
-        user:
+        mm_user:
           description: userid to login with into the API.
           required: True
           type: str
-        password:
+        mm_password:
           description: password to login with into the API.
           required: True
           type: str
@@ -124,20 +124,20 @@ EXAMPLES = r"""
     authority: mmsuite.example.net
     customproperties:
       location: Reykjavik
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 
 - name: Release a zone
  ansilabnl.micetro.zone:
     state: absent
     name: example.com
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 """
 
@@ -177,13 +177,13 @@ def run_module():
         adreplicationtype=dict(type="str", required=False),
         adpartition=dict(type="str", required=False),
         customproperties=dict(type="dict", required=False),
-        provider=dict(
+        mm_provider=dict(
             type="dict",
             required=True,
             options=dict(
-                mmurl=dict(type="str", required=True, no_log=False),
-                user=dict(type="str", required=True, no_log=False),
-                password=dict(type="str", required=True, no_log=True),
+                mm_url=dict(type="str", required=True, no_log=False),
+                mm_user=dict(type="str", required=True, no_log=False),
+                mm_password=dict(type="str", required=True, no_log=True),
             ),
         ),
     )
@@ -211,7 +211,7 @@ def run_module():
     module.params["servtype"] = module.params["servtype"].capitalize()
 
     # Get all API settings
-    provider = module.params["provider"]
+    mm_provider = module.params["mm_provider"]
 
     # Name is required
     if not module.params["name"]:
@@ -223,7 +223,7 @@ def run_module():
 
     # Get the existing DNS View for the nameserver
     refs = "DNSViews?dnsServerRef=%s" % module.params.get("nameserver")
-    resp = get_single_refs(refs, provider)
+    resp = get_single_refs(refs, mm_provider)
 
     # If the 'invalid' key exists, the request failed.
     if resp.get("invalid", None):
@@ -238,7 +238,7 @@ def run_module():
         module.params.get("name"),
         dnsview_ref,
     )
-    resp = get_single_refs(refs, provider)
+    resp = get_single_refs(refs, mm_provider)
 
     # If absent is requested, make a quick delete
     if module.params["state"] == "absent":
@@ -250,7 +250,7 @@ def run_module():
         http_method = "DELETE"
         url = "%s" % resp["dnsZones"][0]["ref"]
         databody = {"saveComment": "Ansible API"}
-        result = doapi(url, http_method, provider, databody)
+        result = doapi(url, http_method, mm_provider, databody)
         module.exit_json(**result)
 
     # Come here the zone needs to be present
@@ -323,7 +323,7 @@ def run_module():
 
         # Execute the API
         if change:
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
     else:
         # Create the API call
         http_method = "POST"
@@ -363,7 +363,7 @@ def run_module():
             databody["dnsZone"]["customProperties"] = props
 
         # Create the zone on the Men&Mice Suite
-        result = doapi(url, http_method, provider, databody)
+        result = doapi(url, http_method, mm_provider, databody)
 
     # return collected results
     module.exit_json(**result)

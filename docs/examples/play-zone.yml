@@ -3,10 +3,10 @@
 # The file <ansible_topdir>/group_vars/all contains:
 #
 #    ---
-#    provider:
-#      mmurl: http://mmsuite.example.net
-#      user: apiuser
-#      password: apipasswd
+#    mm_provider:
+#      mm_url: http://mmsuite.example.net
+#      mm_user: apiuser
+#      mm_password: apipasswd
 #
 - name: Men&Mice Micetro zone test play
   hosts: localhost
@@ -32,12 +32,12 @@
         customproperties:
           owner: Me, myself and I
           place: Netherlands
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Remove the zone
       ansilabnl.micetro.zone:
         state: absent
         name: example.com
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost

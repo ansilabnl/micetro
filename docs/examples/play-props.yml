@@ -5,10 +5,10 @@
 # The file <ansible_topdir>/group_vars/all contains:
 #
 #    ---
-#    provider:
-#      mmurl: http://mmsuite.example.net
-#      user: apiuser
-#      password: apipasswd
+#    mm_provider:
+#      mm_url: http://mmsuite.example.net
+#      mm_user: apiuser
+#      mm_password: apipasswd
 #
 - name: Men&Mice Micetro Custom Properties test play
   hosts: localhost
@@ -34,7 +34,7 @@
           - Paul
           - Ringo
           - George
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Check idempotentie
@@ -48,7 +48,7 @@
           - Paul
           - Ringo
           - George
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Change type - not allowed
@@ -62,7 +62,7 @@
           - Paul
           - Ringo
           - George
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Change list around
@@ -76,7 +76,7 @@
           - John
           - Paul
           - Ringo
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Remove property
@@ -85,7 +85,7 @@
         name: MyProperty
         proptype: text
         dest: dnsserver
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Remove property - again
@@ -94,5 +94,5 @@
         name: MyProperty
         proptype: yesno
         dest: dnsserver
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost

@@ -103,20 +103,20 @@ DOCUMENTATION = r"""
       required: False
       type: bool
       default: False
-    provider:
-      description: Definition of the Men&Mice suite API provider.
+    mm_provider:
+      description: Definition of the Men&Mice suite API mm_provider.
       type: dict
       required: True
       suboptions:
-        mmurl:
+        mm_url:
           description: Men&Mice API server to connect to.
           required: True
           type: str
-        user:
+        mm_user:
           description: userid to login with into the API.
           required: True
           type: str
-        password:
+        mm_password:
           description: password to login with into the API.
           required: True
           type: str
@@ -130,10 +130,10 @@ EXAMPLES = r"""
     state: present
     proptype: text
     dest: zone
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 """
 
@@ -203,13 +203,13 @@ def run_module():
         defaultvalue=dict(type="str", required=False, default=""),
         cloudtags=dict(type="list", required=False, default=[]),
         listitems=dict(type="list", required=False, default=[]),
-        provider=dict(
+        mm_provider=dict(
             type="dict",
             required=True,
             options=dict(
-                mmurl=dict(type="str", required=True, no_log=False),
-                user=dict(type="str", required=True, no_log=False),
-                password=dict(type="str", required=True, no_log=True),
+                mm_url=dict(type="str", required=True, no_log=False),
+                mm_user=dict(type="str", required=True, no_log=False),
+                mm_password=dict(type="str", required=True, no_log=True),
             ),
         ),
     )
@@ -234,8 +234,8 @@ def run_module():
         module.exit_json(**result)
 
     # Get all API settings
-    provider = module.params["provider"]
-    display.vvv(provider)
+    mm_provider = module.params["mm_provider"]
+    display.vvv(mm_provider)
 
     # Check if the property is already present
     http_method = "GET"
@@ -244,7 +244,7 @@ def run_module():
         module.params.get("name"),
     )
     databody = {}
-    resp = doapi(url, http_method, provider, databody)
+    resp = doapi(url, http_method, mm_provider, databody)
 
     # If absent is requested, make a quick delete
     # Just use `1` as the reference, as it should always be there
@@ -257,7 +257,7 @@ def run_module():
                 module.params.get("name"),
             )
             databody = {"saveComment": "Ansible API"}
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
         module.exit_json(**result)
 
     # Whether adding or updating the property, the databody is almost the
@@ -319,7 +319,7 @@ def run_module():
             databody["updateExisting"] = module.params.get("updatexisting")
 
     databody["saveComment"] = "Ansible API"
-    result = doapi(url, http_method, provider, databody)
+    result = doapi(url, http_method, mm_provider, databody)
 
     # return collected results
     module.exit_json(**result)

@@ -29,20 +29,20 @@ DOCUMENTATION = r"""
     description:
       - This lookup collects info of an IP address
     options:
-      provider:
-        description: Definition of the Men&Mice suite API provider
+      mm_provider:
+        description: Definition of the Men&Mice suite API mm_provider
         type: dict
         required: True
         suboptions:
-          mmurl:
+          mm_url:
             description: Men&Mice API server to connect to
             required: True
             type: str
-          user:
+          mm_user:
             description: userid to login with into the API
             required: True
             type: str
-          password:
+          mm_password:
             description: password to login with into the API
             required: True
             type: str
@@ -57,22 +57,22 @@ DOCUMENTATION = r"""
 EXAMPLES = r"""
 - name: Find all info for IP 172.16.17.2
   debug:
-    msg: "Info for IP: {{ lookup('ansilabnl.micetro.ipinfo', provider, '172.16.17.2') }}"
+    msg: "Info for IP: {{ lookup('ansilabnl.micetro.ipinfo', mm_provider, '172.16.17.2') }}"
   vars:
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
 
 - name: Get DHCP reservations for 172.16.17.2
   debug:
         msg: "{{ ipinfo['dhcpReservations'] }}"
   vars:
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
-    ipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, '172.16.17.2') }}"
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
+    ipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, '172.16.17.2') }}"
 """
 
 RETURN = r"""
@@ -89,24 +89,24 @@ class LookupModule(LookupBase):
     def run(self, terms, variables=None, **kwargs):
         """Variabele terms contains a list with supplied parameters.
 
-        - provider  -> Definition of the Men&Mice suite API provider
+        - mm_provider  -> Definition of the Men&Mice suite API mm_provider
         - IPAddress -> The IPAddress to examine
         """
         # Sufficient parameters
         if len(terms) < 2:
             raise AnsibleError(
-                "Insufficient parameters. Need at least: MMURL, User, Password and IPAddress."
+                "Insufficient parameters. Need at least: mm_url, mm_user, mm_password and IPAddress."
             )
 
         # Get the parameters
-        provider = terms[0]
+        mm_provider = terms[0]
         ipaddress = terms[1].strip()
 
         # Call the API to find info
         http_method = "GET"
         url = "%s/%s" % ("IPAMRecords", ipaddress)
         databody = {}
-        result = doapi(url, http_method, provider, databody)
+        result = doapi(url, http_method, mm_provider, databody)
 
         # An error occured?
         if result.get("warnings", None):

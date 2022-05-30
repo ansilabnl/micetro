@@ -5,10 +5,10 @@
 # The file <ansible_topdir>/group_vars/all contains:
 #
 #    ---
-#    provider:
-#      mmurl: http://mmsuite.example.net
-#      user: apiuser
-#      password: apipasswd
+#    mm_provider:
+#      mm_url: http://mmsuite.example.net
+#      mm_user: apiuser
+#      mm_password: apipasswd
 #
 - name: Men&Mice Micetro DHCP test play
   hosts: localhost
@@ -29,7 +29,7 @@
         name: myreservation
         ipaddress: 172.16.17.8
         macaddress: 44:55:66:77:88:00
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: check idempotentie
@@ -38,7 +38,7 @@
         name: myreservation
         ipaddress: 172.16.17.8
         macaddress: 44:55:66:77:88:00
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     # Changing the MAC address of a reservation is not allowed, as this
@@ -50,7 +50,7 @@
         name: myreservation
         ipaddress: 172.16.17.8
         macaddress: 44:55:66:77:88:99
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: change ip
@@ -59,7 +59,7 @@
         name: myreservation
         ipaddress: 172.16.17.9
         macaddress: 44:55:66:77:88:99
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: change name
@@ -68,7 +68,7 @@
         name: movemyreservation
         ipaddress: 172.16.17.9
         macaddress: 44:55:66:77:88:99
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: delete reservation (wrong one)
@@ -77,7 +77,7 @@
         name: movemyreservation
         ipaddress: 172.16.17.9
         macaddress: 44:55:66:77:88:99
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: delete reservation (correct one)
@@ -86,7 +86,7 @@
         name: myreservation
         ipaddress: 172.16.17.8
         macaddress: 44:55:66:77:88:99
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: create reservation in invalid range
@@ -95,5 +95,5 @@
         name: reservationnonet
         ipaddress: 172.16.17.58
         macaddress: 44:55:66:77:88:99
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost

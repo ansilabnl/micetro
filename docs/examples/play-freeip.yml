@@ -5,10 +5,10 @@
 # The file <ansible_topdir>/group_vars/all contains:
 #
 #    ---
-#    provider:
-#      mmurl: http://mmsuite.example.net
-#      user: apiuser
-#      password: apipasswd
+#    mm_provider:
+#      mm_url: http://mmsuite.example.net
+#      mm_user: apiuser
+#      mm_password: apipasswd
 #
 - name: Men&Mice Micetro FreeIP test play
   hosts: localhost
@@ -23,7 +23,7 @@
     - name: Set free IP addresses as a fact
       ansible.builtin.set_fact:
         freeips: "{{ query('ansilabnl.micetro.freeip',
-                         provider,
+                         mm_provider,
                          network,
                          multi=25,
                          claim=60,

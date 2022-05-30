@@ -5,10 +5,10 @@
 # The file <ansible_topdir>/group_vars/all contains:
 #
 #    ---
-#    provider:
-#      mmurl: http://mmsuite.example.net
-#      user: apiuser
-#      password: apipasswd
+#    mm_provider:
+#      mm_url: http://mmsuite.example.net
+#      mm_user: apiuser
+#      mm_password: apipasswd
 #
 - name: Men&Mice Micetro users test play
   hosts: localhost
@@ -38,7 +38,7 @@
           - User Administrators (built-in)
           - Approvers (built-in)
           - Requesters (built-in)
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
 
     - name: Check idempotency
       ansilabnl.micetro.user:
@@ -55,7 +55,7 @@
           - User Administrators (built-in)
           - Approvers (built-in)
           - Requesters (built-in)
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
 
     - name: Change the groups
       ansilabnl.micetro.user:
@@ -69,7 +69,7 @@
           - User Administrators (built-in)
           - Approvers (built-in)
           - Requesters (built-in)
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
 
     - name: Check idempotency again
       ansilabnl.micetro.user:
@@ -83,10 +83,10 @@
           - User Administrators (built-in)
           - Approvers (built-in)
           - Requesters (built-in)
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
 
     - name: Remove the user again
       ansilabnl.micetro.user:
         username: johnd
         state: absent
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"

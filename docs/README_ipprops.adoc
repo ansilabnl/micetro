@@ -8,7 +8,7 @@ Set properties on an IP address in Men&Mice Micetro
 - `ipaddress`: (required) The IP address(es) to work on.
 - `properties`: (required) Custom properties for the IP address. These
   properties must already be defined.
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 - `state`: Property present or not. (`absent`, `present`)
 
 ==== Examples
@@ -23,6 +23,6 @@ Set properties on an IP address in Men&Mice Micetro
     properties:
       claimed: false
       location: London
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 ----

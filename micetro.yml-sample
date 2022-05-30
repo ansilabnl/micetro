@@ -1,8 +1,8 @@
 ---
 plugin: ansilabnl.micetro.inventory
-host: "http://mmsuite.example.net"
-user: apidude
-password: TheAPIDude
+mm_url: "http://mmsuite.example.net"
+mm_user: apidude
+mm_password: TheAPIDude
 
 #filters:
 ##  - location: home

@@ -19,7 +19,7 @@ Manage DNS zones in Men&Mice Micetro
 - `name`: (required) Name of the zone.
 - `nameserver`: Nameserver to define the zone on. Required if
   `state=present`.
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 - `servtype`: Type of the master server.
 - `state`: The state of the zone. (`absent`, `present`)
 
@@ -36,13 +36,13 @@ Manage DNS zones in Men&Mice Micetro
     authority: mmsuite.example.net
     customproperties:
       location: Reykjavik
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 
 - name: Release a zone
   ansilabnl.micetro.zone:
     state: absent
     name: example.com
-    provider: "{{ provider }}"
+    mm_provider: "{{ mm_provider }}"
   delegate_to: localhost
 ----

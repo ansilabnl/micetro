@@ -60,29 +60,29 @@ DOCUMENTATION = """
           - name: ANSIBLE_INVENTORY_ENABLED
         required: True
         choices: ['ansilabnl.micetro.inventory']
-      host:
+      mm_url:
         description: The network address of the Men&Mice Micetro host
         type: string
         env:
-          - name: MICETRO_HOST
+          - name: MM_HOST
         required: True
-      user:
+      mm_user:
         description: The user that you plan to use to access inventories on your Men&Mice Micetro
         type: string
         env:
-          - name: MICETRO_USER
+          - name: MM_USER
         required: True
-      password:
+      mm_password:
         description: The password for your your Men&Mice Micetro user
         type: string
         env:
-          - name: MICETRO_PASSWORD
+          - name: MM_PASSWORD
         required: True
       ranges:
         description: Ranges to get the inventory from (e.g. 172.16.17.0/24)
         type: list
         env:
-          - name: MICETRO_RANGES
+          - name: MM_RANGES
         required: False
       filters:
         description:
@@ -93,7 +93,7 @@ DOCUMENTATION = """
             all special characters are translated to "_"
         type: list
         env:
-          - name: MICETRO_FILTERS
+          - name: MM_FILTERS
         required: False
 """
 
@@ -104,17 +104,17 @@ EXAMPLES = """
 # Examples using micetro_inventory.yml file
 
 plugin: ansilabnl.micetro.inventory
-host: "http://mmsuite.example.net"
-user: apiuser
-password: apipasswd
+mm_url: "http://mmsuite.example.net"
+mm_user: apiuser
+mm_password: apipasswd
 filters:
   - location: London
 
 
 plugin: ansilabnl.micetro.inventory
-host: "http://mmsuite.example.net"
-user: apiuser
-password: apipasswd
+mm_url: "http://mmsuite.example.net"
+mm_user: apiuser
+mm_password: apipasswd
 ranges:
   - 172.16.17.0/24
 
@@ -146,11 +146,11 @@ cache_connection = /tmp/micetro_inv_cache
 
 # Set environment variables:
 #
-# export MICETRO_HOST=YOUR_MICETRO_HOST_ADDRESS
-# export MICETRO_USER=YOUR_MICETRO_USER
-# export MICETRO_PASSWORD=YOUR_MICETRO_PASSWORD
-# export MICETRO_FILTERS=YOUR_MICETRO_FILTERS
-# export MICETRO_RANGES=YOUR_MICETRO_RANGES
+# export MM_HOST=YOUR_MM_HOST_ADDRESS
+# export MM_USER=YOUR_MM_USER
+# export MM_PASSWORD=YOUR_MM_PASSWORD
+# export MM_FILTERS=YOUR_MM_FILTERS
+# export MM_RANGES=YOUR_MM_RANGES
 
 # Read the inventory from the Men&Mice Suite, and list them.
 # The inventory path must always be @micetro_inventory if you are reading
@@ -203,7 +203,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
                  'hosts': [{'name': hostname, 'address': ipaddress}, ...],
                  'groups': {
                      "all": [hostname1, hostname2, ...],
-                     "micetro_hosts": [hostname1, hostname2, ...],
+                     "mm_urls": [hostname1, hostname2, ...],
                      "custgrp1":  [hostname1, hostname5, ...],
                      "custgrp3":  [hostname4, hostname7, ...],
                      .
@@ -217,19 +217,23 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
         # Read inventory from Men&Mice Suite server
 
         # Get the needed connection information
-        mmurl = self.get_option("host")
-        user = self.get_option("user")
-        password = self.get_option("password")
+        mm_url = self.get_option("mm_url")
+        mm_user = self.get_option("mm_user")
+        mm_password = self.get_option("mm_password")
 
-        # If provider information is not present, quit
-        if not (mmurl and user and password):
+        # If mm_provider information is not present, quit
+        if not (mm_url and mm_user and mm_password):
             raise AnsibleParserError(
-                "Missing connection provider (mmurl, ",
-                "username, password) in configuration file",
+                "Missing connection mm_provider (mm_url, ",
+                "mm_user, mm_password) in configuration file",
             )
 
-        # Construct connection provider
-        provider = {"mmurl": mmurl, "user": user, "password": password}
+        # Construct connection mm_provider
+        mm_provider = {
+            "mm_url": mm_url,
+            "mm_user": mm_user,
+            "mm_password": mm_password,
+        }
 
         # Check if filters are supplied
         try:
@@ -244,13 +248,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
             ranges = []
 
         # Start with an (almost) empty inventory
-        invent = {"hosts": [], "groups": {"all": [], "micetro_hosts": []}}
+        invent = {"hosts": [], "groups": {"all": [], "mm_urls": []}}
 
         # Get all IP ranges
         http_method = "GET"
         url = "Ranges"
         databody = {}
-        result = doapi(url, http_method, provider, databody)
+        result = doapi(url, http_method, mm_provider, databody)
 
         # Find all child ranges, to prevent checking everything
         children = []
@@ -275,7 +279,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
         for child in children:
             # Construct the JSON databody
             databody = {"filter": "state=Assigned", "rangeRef": child["name"]}
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
 
             # All IPAM records in the range are retrieved. Split it out
             for ipam in result["message"]["result"]["ipamRecords"]:
@@ -332,7 +336,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
                 # If filter wants this host, add the host
                 if add_host:
                     invent["groups"]["all"].append(hostname)
-                    invent["groups"]["micetro_hosts"].append(hostname)
+                    invent["groups"]["mm_urls"].append(hostname)
 
         # Return collected results
         return invent

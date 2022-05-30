@@ -79,20 +79,20 @@ DOCUMENTATION = r"""
       required: False
       type: list
       elements: str
-    provider:
-      description: Definition of the Men&Mice suite API provider.
+    mm_provider:
+      description: Definition of the Men&Mice suite API mm_provider.
       type: dict
       required: True
       suboptions:
-        mmurl:
+        mm_url:
           description: Men&Mice API server to connect to.
           required: True
           type: str
-        user:
+        mm_user:
           description: userid to login with into the API.
           required: True
           type: str
-        password:
+        mm_password:
           description: password to login with into the API.
           required: True
           type: str
@@ -115,20 +115,20 @@ EXAMPLES = r"""
       - User Administrators (built-in)
       - Approvers (built-in)
       - Requesters (built-in)
-  provider:
-    mmurl: http://mmsuite.example.net
-    user: apiuser
-    password: apipasswd
+  mm_provider:
+    mm_url: http://mmsuite.example.net
+    mm_user: apiuser
+    mm_password: apipasswd
   delegate_to: localhost
 
 - name: Remove user 'johnd'
  ansilabnl.micetro.user:
     username: johnd
     state: absent
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 """
 
@@ -161,13 +161,13 @@ def run_module():
         authentication_type=dict(type="str", required=False),
         groups=dict(type="list", required=False),
         roles=dict(type="list", required=False),
-        provider=dict(
+        mm_provider=dict(
             type="dict",
             required=True,
             options=dict(
-                mmurl=dict(type="str", required=True, no_log=False),
-                user=dict(type="str", required=True, no_log=False),
-                password=dict(type="str", required=True, no_log=True),
+                mm_url=dict(type="str", required=True, no_log=False),
+                mm_user=dict(type="str", required=True, no_log=False),
+                mm_password=dict(type="str", required=True, no_log=True),
             ),
         ),
     )
@@ -192,15 +192,15 @@ def run_module():
         module.exit_json(**result)
 
     # Get all API settings
-    provider = module.params["provider"]
-    display.vvv(provider)
+    mm_provider = module.params["mm_provider"]
+    display.vvv(mm_provider)
 
     # Get all users from the Men&Mice server, start with Users url
     state = module.params["state"]
     display.vvv("State:", state)
 
     # Get list of all users in the system
-    resp = getrefs("Users", provider)
+    resp = getrefs("Users", mm_provider)
     users = resp["message"]["result"]["users"]
     if resp.get("warnings", None):
         module.fail_json(msg="Collecting users: %s" % resp.get("warnings"))
@@ -208,7 +208,7 @@ def run_module():
 
     # If groups are requested, get all groups
     if module.params["groups"]:
-        resp = getrefs("Groups", provider)
+        resp = getrefs("Groups", mm_provider)
         if resp.get("warnings", None):
             module.fail_json(msg="Collecting groups: %s" % resp.get("warnings"))
         groups = resp["message"]["result"]["groups"]
@@ -216,7 +216,7 @@ def run_module():
 
     # If roles are requested, get all roles
     if module.params["roles"]:
-        resp = getrefs("Roles", provider)
+        resp = getrefs("Roles", mm_provider)
         if resp.get("warnings", None):
             module.fail_json(msg="Collecting roles: %s" % resp.get("warnings"))
         roles = resp["message"]["result"]["roles"]
@@ -328,7 +328,7 @@ def run_module():
                     },
                 ],
             }
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
             result["changed"] = False
 
             # Now figure out if groups need to be added or deleted
@@ -364,7 +364,7 @@ def run_module():
                         % (http_method, thisgrp["ref"], user_ref)
                     )
                     url = "%s/%s" % (thisgrp["ref"], user_ref)
-                    result = doapi(url, http_method, provider, databody)
+                    result = doapi(url, http_method, mm_provider, databody)
                     result["changed"] = True
 
             # Be aware. Calling adding and deleting roles and groups is just the
@@ -390,7 +390,7 @@ def run_module():
                         % (http_method, thisrole["ref"], user_ref)
                     )
                     url = "%s/%s" % (user_ref, thisrole["ref"])
-                    result = doapi(url, http_method, provider, databody)
+                    result = doapi(url, http_method, mm_provider, databody)
                     result["changed"] = True
         else:
             # User not present, create
@@ -409,7 +409,7 @@ def run_module():
                     "roles": wanted_roles,
                 },
             }
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
             if result.get("warnings", None):
                 module.fail_json(msg=result.get("warnings"))
             user_ref = result["message"]["result"]["ref"]
@@ -419,14 +419,14 @@ def run_module():
             for grp in wanted_groups:
                 http_method = "PUT"
                 url = "%s/%s" % (grp["ref"], user_ref)
-                result = doapi(url, http_method, provider, databody)
+                result = doapi(url, http_method, mm_provider, databody)
 
             # For some reason the Roles are not accepted, so just loop over it
             databody = {"saveComment": "Ansible API"}
             for role in wanted_roles:
                 http_method = "PUT"
                 url = "%s/%s" % (user_ref, role["ref"])
-                result = doapi(url, http_method, provider, databody)
+                result = doapi(url, http_method, mm_provider, databody)
 
         # Show some debugging
         display.vvv("databody:", databody)
@@ -440,7 +440,7 @@ def run_module():
             http_method = "DELETE"
             url = "Users/%s" % user_ref
             databody = {"saveComment": "Ansible API"}
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
         else:
             # User not present, done
             result = {

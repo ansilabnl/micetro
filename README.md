@@ -29,5 +29,5 @@ Ansible.
 
 For the complete documentation, see the `docs` directory.
 
-Please enjoy.
-	The Men&Mice Team
+Please enjoy,\
+&nbsp;&nbsp;&nbsp;&nbsp;The Men&Mice Team

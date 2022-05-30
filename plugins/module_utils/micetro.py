@@ -25,13 +25,13 @@ TRUEFALSE = {
 }
 
 
-def doapi(url, method, provider, databody):
+def doapi(url, method, mm_provider, databody):
     """Run an API call.
 
     Parameters:
         - url          -> Relative URL for the API entry point
         - method       -> The API method (GET, POST, DELETE,...)
-        - provider     -> Needed credentials for the API provider
+        - mm_provider     -> Needed credentials for the API mm_provider
         - databody     -> Data needed for the API to perform the task
 
     Returns:
@@ -42,7 +42,7 @@ def doapi(url, method, provider, databody):
     each a couple of seconds apart, this to handle high-availability
     """
     headers = {"Content-Type": "application/json"}
-    apiurl = "%s/mmws/api/%s" % (provider["mmurl"], url)
+    apiurl = "%s/mmws/api/%s" % (mm_provider["mm_url"], url)
     result = {}
 
     # Maximum and current number of tries to connect to the Men&Mice API
@@ -56,8 +56,8 @@ def doapi(url, method, provider, databody):
                 apiurl,
                 method=method,
                 force_basic_auth=True,
-                url_username=provider["user"],
-                url_password=provider["password"],
+                url_username=mm_provider["mm_user"],
+                url_password=mm_provider["mm_password"],
                 data=json.dumps(databody),
                 validate_certs=False,
                 headers=headers,
@@ -123,32 +123,32 @@ def doapi(url, method, provider, databody):
         return result
 
 
-def getrefs(objtype, provider):
+def getrefs(objtype, mm_provider):
     """Get all objects of a certain type.
 
     Parameters
         - objtype  -> Object type to get all refs for (User, Group, ...)
-        - provider -> Needed credentials for the API provider
+        - mm_provider -> Needed credentials for the API mm_provider
 
     Returns:
         - The response from the API call
         - The Ansible result dict
     """
-    return doapi(objtype, "GET", provider, {})
+    return doapi(objtype, "GET", mm_provider, {})
 
 
-def get_single_refs(objname, provider):
+def get_single_refs(objname, mm_provider):
     """Get all information about a single object.
 
     Parameters
         - objname  -> Object name to get all refs for (IPAMRecords/172.16.17.201)
-        - provider -> Needed credentials for the API provider
+        - mm_provider -> Needed credentials for the API mm_provider
 
     Returns:
         - The response from the API call
         - The Ansible result dict
     """
-    resp = doapi(objname, "GET", provider, {})
+    resp = doapi(objname, "GET", mm_provider, {})
     if resp.get("message"):
         return resp["message"]["result"]
 
@@ -159,14 +159,14 @@ def get_single_refs(objname, provider):
     return "Unknow error"
 
 
-def get_dhcp_scopes(provider, ipaddress):
+def get_dhcp_scopes(mm_provider, ipaddress):
     """Given an IP Address, find the DHCP scopes."""
     url = "Ranges?filter=%s" % ipaddress
 
     # Get the information of this IP range.
     # I'm not sure if an IP address can be part of multiple DHCP
     # scopes, but in the API it's defined as a list, so find them all.
-    resp = doapi(url, "GET", provider, {})
+    resp = doapi(url, "GET", mm_provider, {})
 
     # Gather all DHCP scopes for this IP address
     scopes = []

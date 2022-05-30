@@ -21,7 +21,7 @@ in a certain network, defined in Men&Mice Micetro.
 
 - `ping`: ping the address found before returning.
 
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 
 ==== Usage
 
@@ -45,17 +45,17 @@ Example usage:
   become: false
 
   vars:
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipassword
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipassword
     network: examplenet
 
   tasks:
     - name: Set free IP addresses as a fact
       set_fact:
         freeips: "{{ query('ansilabnl.micetro.freeip',
-                           provider,
+                           mm_provider,
                            network,
                            multi=15,
                            claim=60,

@@ -7,6 +7,7 @@ ignore: |
   docs
   galaxy.yml
   changelogs/
+  play_tests/
 
 rules:
   braces:

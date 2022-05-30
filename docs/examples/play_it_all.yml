@@ -59,7 +59,7 @@
         state: present
         proptype: text
         dest: ipaddress
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
 
     # The above example defines just a single property.
     # Defining multiple properties can be achieved by using
@@ -90,7 +90,7 @@
     # multiple hosts.
     - name: get free IP addresses and set it as a fact
       ansible.builtin.set_fact:
-        freeips: "{{ query('ansilabnl.micetro.freeip', provider, network, claim=60, excludedhcp=True) }}"
+        freeips: "{{ query('ansilabnl.micetro.freeip', mm_provider, network, claim=60, excludedhcp=True) }}"
 
     - name: Get the free IP address and show info
       ansible.builtin.debug:
@@ -106,7 +106,7 @@
         name: testhost
         ipaddress: "{{ freeips }}"
         macaddress: "de:ad:be:ef:16:10"
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Set properties on IP
@@ -116,7 +116,7 @@
         properties:
           claimed: false
           location: London
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Ensure the zone
@@ -127,7 +127,7 @@
         authority: mandm.example.net
         masters: mandm.example.net
         servtype: master
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     # The `ansilabnl.micetro.freeip` plugin always returns a list, but the request was for just 1
@@ -138,7 +138,7 @@
         dnszone: testzone
         name: testhost
         data: "{{ freeips[0] }}"
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Set a PTR DNS record for the claimed IP
@@ -147,7 +147,7 @@
         name: "{{ freeips[0] | ansible.utils.ipaddr('revdns') }}"
         data: "testhost.testzone."
         rrtype: PTR
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     # The `ansilabnl.micetro.ipinfo` returns all known information of an IP
@@ -157,7 +157,7 @@
       ansible.builtin.debug:
         var: freeipinfo
       vars:
-        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, freeips[0]) | to_nice_json }}"
+        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, freeips[0]) | to_nice_json }}"
 
     - name: Renew properties on IP
       ansilabnl.micetro.ipprops:
@@ -166,14 +166,14 @@
         properties:
           claimed: false
           location: Madrid
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Get all info for this IP address
       ansible.builtin.debug:
         var: freeipinfo
       vars:
-        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, freeips[0]) | to_nice_json }}"
+        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, freeips[0]) | to_nice_json }}"
 
     - name: Remove properties of IP
       ansilabnl.micetro.ipprops:
@@ -182,14 +182,14 @@
         deleteunspecified: true
         properties:
           claimed: false
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Get all info for this IP address
       ansible.builtin.debug:
         var: freeipinfo
       vars:
-        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, freeips[0]) | to_nice_json }}"
+        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, freeips[0]) | to_nice_json }}"
 
     - name: Remove reservation on IP address
       ansilabnl.micetro.dhcp:
@@ -197,14 +197,14 @@
         name: testhost
         ipaddress: "{{ freeips }}"
         macaddress: "de:ad:be:ef:16:10"
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Get all info for this IP address
       ansible.builtin.debug:
         var: freeipinfo
       vars:
-        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, freeips[0]) | to_nice_json }}"
+        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, freeips[0]) | to_nice_json }}"
 
     - name: Remove DNS record for the claimed IP
       ansilabnl.micetro.dnsrecord:
@@ -212,7 +212,7 @@
         dnszone: testzone
         name: testhost
         data: "{{ freeips[0] }}"
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Remove the PTR DNS record for the claimed IP
@@ -222,14 +222,14 @@
         name: "{{ freeips[0] | ansible.utils.ipaddr('revdns') }}"
         data: "testhost.testzone."
         rrtype: PTR
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost
 
     - name: Get all info for this IP address
       ansible.builtin.debug:
         var: freeipinfo
       vars:
-        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, freeips[0]) | to_nice_json }}"
+        freeipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, freeips[0]) | to_nice_json }}"
 
     - name: Ensure the zone absent
       ansilabnl.micetro.zone:
@@ -239,5 +239,5 @@
         authority: mandm.example.net
         masters: mandm.example.net
         servtype: master
-        provider: "{{ provider }}"
+        mm_provider: "{{ mm_provider }}"
       delegate_to: localhost

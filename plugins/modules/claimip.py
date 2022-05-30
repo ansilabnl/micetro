@@ -55,20 +55,20 @@ DOCUMENTATION = r"""
       seealso: See also M(mm_props)
       type: dict
       required: False
-    provider:
-      description: Definition of the Men&Mice suite API provider.
+    mm_provider:
+      description: Definition of the Men&Mice suite API mm_provider.
       type: dict
       required: True
       suboptions:
-        mmurl:
+        mm_url:
           description: Men&Mice API server to connect to.
           required: True
           type: str
-        user:
+        mm_user:
           description: userid to login with into the API.
           required: True
           type: str
-        password:
+        mm_password:
           description: password to login with into the API.
           required: True
           type: str
@@ -80,10 +80,10 @@ EXAMPLES = r"""
  ansilabnl.micetro.claimip:
     state: present
     ipaddress: 172.16.12.14
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 
 - name: Release claim on IP addresses
@@ -93,10 +93,10 @@ EXAMPLES = r"""
       - 172.16.12.14
       - 172.16.12.15
       - 172.16.12.16
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 """
 
@@ -125,13 +125,13 @@ def run_module():
         ),
         ipaddress=dict(type="list", required=True),
         customproperties=dict(type="dict", required=False),
-        provider=dict(
+        mm_provider=dict(
             type="dict",
             required=True,
             options=dict(
-                mmurl=dict(type="str", required=True, no_log=False),
-                user=dict(type="str", required=True, no_log=False),
-                password=dict(type="str", required=True, no_log=True),
+                mm_url=dict(type="str", required=True, no_log=False),
+                mm_user=dict(type="str", required=True, no_log=False),
+                mm_password=dict(type="str", required=True, no_log=True),
             ),
         ),
     )
@@ -156,14 +156,14 @@ def run_module():
         module.exit_json(**result)
 
     # Get all API settings
-    provider = module.params["provider"]
-    display.vvv(provider)
+    mm_provider = module.params["mm_provider"]
+    display.vvv(mm_provider)
 
     for ipaddress in module.params["ipaddress"]:
         # Get the IP address and find the reference
         # If the 'invalid' key exists, the request failed.
         refs = "IPAMRecords/%s" % ipaddress
-        resp = get_single_refs(refs, provider)
+        resp = get_single_refs(refs, mm_provider)
         if resp.get("invalid", None):
             result.pop("message", None)
             result["warnings"] = resp.get("warnings", None)
@@ -190,7 +190,7 @@ def run_module():
                     databody["properties"][key] = val
 
             # Execute the API
-            result = doapi(url, http_method, provider, databody)
+            result = doapi(url, http_method, mm_provider, databody)
         else:
             result["message"] = "No claim change for %s" % ipaddress
 

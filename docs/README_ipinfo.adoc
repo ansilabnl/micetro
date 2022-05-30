@@ -6,7 +6,7 @@ IP address, defined in Men&Mice Micetro.
 ==== Options
 
 - `ipaddress`: (required) The IP address that is examined
-- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `mm_provider`: (required) Definition of the Men&Mice Micetro API mm_provider.
 
 ==== Usage
 
@@ -22,7 +22,7 @@ Example usage:
   debug:
     var: ipinfo
   vars:
-    ipinfo: "{{ query('ansilabnl.micetro.ipinfo', provider, '172.16.17.2') | to_nice_json }}"
+    ipinfo: "{{ query('ansilabnl.micetro.ipinfo', mm_provider, '172.16.17.2') | to_nice_json }}"
 ----
 
 With output like (output shortened):

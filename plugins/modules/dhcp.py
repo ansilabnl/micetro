@@ -81,20 +81,20 @@ DOCUMENTATION = r"""
       description: Clear properties that are not explicitly set.
       type: bool
       required: False
-    provider:
-      description: Definition of the Men&Mice suite API provider.
+    mm_provider:
+      description: Definition of the Men&Mice suite API mm_provider.
       type: dict
       required: True
       suboptions:
-        mmurl:
+        mm_url:
           description: Men&Mice API server to connect to.
           required: True
           type: str
-        user:
+        mm_user:
           description: userid to login with into the API.
           required: True
           type: str
-        password:
+        mm_password:
           description: password to login with into the API.
           required: True
           type: str
@@ -108,10 +108,10 @@ EXAMPLES = r"""
     name: myreservation
     ipaddress: 172.16.17.8
     macaddress: 44:55:66:77:88:99
-    provider:
-      mmurl: http://mmsuite.example.net
-      user: apiuser
-      password: apipasswd
+    mm_provider:
+      mm_url: http://mmsuite.example.net
+      mm_user: apiuser
+      mm_password: apipasswd
   delegate_to: localhost
 """
 
@@ -144,13 +144,13 @@ def run_module():
         servername=dict(type="str", required=False, default=""),
         nextserver=dict(type="str", required=False, default=""),
         deleteunspecified=dict(type="bool", required=False, default=False),
-        provider=dict(
+        mm_provider=dict(
             type="dict",
             required=True,
             options=dict(
-                mmurl=dict(type="str", required=True, no_log=False),
-                user=dict(type="str", required=True, no_log=False),
-                password=dict(type="str", required=True, no_log=True),
+                mm_url=dict(type="str", required=True, no_log=False),
+                mm_user=dict(type="str", required=True, no_log=False),
+                mm_password=dict(type="str", required=True, no_log=True),
             ),
         ),
     )
@@ -175,13 +175,13 @@ def run_module():
         module.exit_json(**result)
 
     # Get all API settings
-    provider = module.params["provider"]
-    display.vvv(provider)
+    mm_provider = module.params["mm_provider"]
+    display.vvv(mm_provider)
 
     for ipaddress in module.params["ipaddress"]:
         # Get the existing reservation for requested IP address
         refs = "IPAMRecords/%s" % ipaddress
-        resp = get_single_refs(refs, provider)
+        resp = get_single_refs(refs, mm_provider)
         # If the 'invalid' key exists, the request failed.
         if resp.get("invalid", None):
             result.pop("message", None)
@@ -189,7 +189,7 @@ def run_module():
             result["changed"] = False
             break
 
-        scopes = get_dhcp_scopes(provider, ipaddress)
+        scopes = get_dhcp_scopes(mm_provider, ipaddress)
         if not scopes:
             errormsg = "No DHCP scope for IP address %s", ipaddress
             module.fail_json(msg=errormsg)
@@ -255,7 +255,7 @@ def run_module():
                     if change:
                         result["changed"] = True
                         url = "%s" % reservation["ref"]
-                        result = doapi(url, http_method, provider, databody)
+                        result = doapi(url, http_method, mm_provider, databody)
             else:
                 # Delete the reservations. Empty body, as the ref is sufficient
                 http_method = "DELETE"
@@ -263,7 +263,7 @@ def run_module():
                 for ref in resp["ipamRecord"]["dhcpReservations"]:
                     if ipaddress in ref["addresses"]:
                         url = ref["ref"]
-                        result = doapi(url, http_method, provider, databody)
+                        result = doapi(url, http_method, mm_provider, databody)
         else:
             if module.params["state"] == "present":
                 # If IP address is a string, turn it into a list, as the API
@@ -290,7 +290,7 @@ def run_module():
                     }
 
                     # Execute the API
-                    result = doapi(url, http_method, provider, databody)
+                    result = doapi(url, http_method, mm_provider, databody)
             else:
                 result["changed"] = False
 
