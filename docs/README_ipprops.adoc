@@ -1,0 +1,28 @@
+=== ansilabnl.micetro.ipprops
+
+Set properties on an IP address in Men&Mice Micetro
+
+==== Options
+
+- `deleteunspecified`: Clear properties that are not explicitly set.
+- `ipaddress`: (required) The IP address(es) to work on.
+- `properties`: (required) Custom properties for the IP address. These
+  properties must already be defined.
+- `provider`: (required) Definition of the Men&Mice Micetro API provider.
+- `state`: Property present or not. (`absent`, `present`)
+
+==== Examples
+
+.IP address custom properties example
+[source,yaml]
+----
+- name: Set properties on IP
+  ansilabnl.micetro.ipprops:
+    state: present
+    ipaddress: 172.16.12.14
+    properties:
+      claimed: false
+      location: London
+    provider: "{{ provider }}"
+  delegate_to: localhost
+----
