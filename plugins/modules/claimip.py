@@ -17,7 +17,6 @@ __metaclass__ = type
 
 # All imports
 from ansible.module_utils.basic import AnsibleModule
-from ansible.utils.display import Display
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     get_single_refs,
@@ -109,9 +108,6 @@ message:
 
 STATEBOOL = {"present": True, "absent": False}
 
-# Make display easier
-display = Display()
-
 
 def run_module():
     """Run Ansible module."""
@@ -157,7 +153,6 @@ def run_module():
 
     # Get all API settings
     mm_provider = module.params["mm_provider"]
-    display.vvv(mm_provider)
 
     for ipaddress in module.params["ipaddress"]:
         # Get the IP address and find the reference

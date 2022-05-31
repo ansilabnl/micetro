@@ -17,7 +17,6 @@ __metaclass__ = type
 
 # All imports
 from ansible.module_utils.basic import AnsibleModule
-from ansible.utils.display import Display
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     get_single_refs,
@@ -147,9 +146,6 @@ message:
     type: str
     returned: always
 """
-
-# Make display easier
-display = Display()
 
 
 def run_module():

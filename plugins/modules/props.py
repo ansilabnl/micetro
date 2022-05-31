@@ -17,7 +17,6 @@ __metaclass__ = type
 
 # All imports
 from ansible.module_utils.basic import AnsibleModule
-from ansible.utils.display import Display
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
 )
@@ -144,9 +143,6 @@ message:
     returned: always
 """
 
-# Make display easier
-display = Display()
-
 PROPTYPES = ["text", "yesno", "ipaddress", "number"]
 DESTTYPES = [
     "dnsserver",
@@ -235,7 +231,6 @@ def run_module():
 
     # Get all API settings
     mm_provider = module.params["mm_provider"]
-    display.vvv(mm_provider)
 
     # Check if the property is already present
     http_method = "GET"

@@ -17,7 +17,6 @@ __metaclass__ = type
 
 # All imports
 from ansible.module_utils.basic import AnsibleModule
-from ansible.utils.display import Display
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     get_single_refs,
@@ -171,9 +170,6 @@ message:
     returned: always
 """
 
-# Make display easier
-display = Display()
-
 # Define all available Resource Record types
 RRTYPES = [
     "A",
@@ -254,7 +250,6 @@ def run_module():
 
     # Get all API settings
     mm_provider = module.params["mm_provider"]
-    display.vvv(mm_provider)
 
     # Get the data field and make it tabbed when needed
     rrname = module.params.get("name").strip()

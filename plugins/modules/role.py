@@ -17,7 +17,6 @@ __metaclass__ = type
 
 # All imports
 from ansible.module_utils.basic import AnsibleModule
-from ansible.utils.display import Display
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     getrefs,
@@ -114,9 +113,6 @@ message:
     returned: always
 """
 
-# Make display easier
-display = Display()
-
 
 def run_module():
     """Run Ansible module."""
@@ -165,18 +161,15 @@ def run_module():
 
     # Get all API settings
     mm_provider = module.params["mm_provider"]
-    display.vvv(mm_provider)
 
     # Get all roles from the Men&Mice server, start with Roles url
     state = module.params["state"]
-    display.vvv("State:", state)
 
     # Get list of all roles in the system
     resp = getrefs("Roles", mm_provider)
     if resp.get("warnings", None):
         module.fail_json(msg="Collecting roles: %s" % resp.get("warnings"))
     roles = resp["message"]["result"]["roles"]
-    display.vvv("Roles:", roles)
 
     # If users are requested, get all users
     if module.params["users"]:
@@ -184,7 +177,6 @@ def run_module():
         if resp.get("warnings", None):
             module.fail_json(msg="Collecting users: %s" % resp.get("warnings"))
         users = resp["message"]["result"]["users"]
-        display.vvv("Users:", users)
 
     # If groups are requested, get all groups
     if module.params["groups"]:
@@ -192,7 +184,6 @@ def run_module():
         if resp.get("warnings", None):
             module.fail_json(msg="Collecting groups: %s" % resp.get("warnings"))
         groups = resp["message"]["result"]["groups"]
-        display.vvv("Groups:", groups)
 
     # Setup loop vars
     role_exists = False
@@ -281,10 +272,6 @@ def run_module():
             # The ones in the playbook are in `wanted_(users|groups)`
             # and the roles ref is in `role_ref` and all roles data is
             # in `role_data`.
-            display.vvv("wanted  groups =", wanted_groups)
-            display.vvv("current groups =", role_data["groups"])
-            display.vvv("wanted  users  =", wanted_users)
-            display.vvv("current users  =", role_data["users"])
 
             # Add or delete a role to or from a group
             # API call with PUT or DELETE
@@ -305,10 +292,6 @@ def run_module():
 
                 # Execute wanted action
                 if http_method:
-                    display.vvv(
-                        "Executing %s on %s for %s"
-                        % (http_method, thisgrp["ref"], role_ref)
-                    )
                     url = "%s/%s" % (thisgrp["ref"], role_ref)
                     result = doapi(url, http_method, mm_provider, databody)
                     result["changed"] = True
@@ -331,10 +314,6 @@ def run_module():
 
                 # Execute wanted action
                 if http_method:
-                    display.vvv(
-                        "Executing %s on %s for %s"
-                        % (http_method, thisuser["ref"], role_ref)
-                    )
                     url = "%s/%s" % (thisuser["ref"], role_ref)
                     result = doapi(url, http_method, mm_provider, databody)
                     result["changed"] = True
@@ -367,8 +346,6 @@ def run_module():
             if result.get("warnings", None):
                 module.fail_json(msg=result.get("warnings"))
             role_ref = result["message"]["result"]["ref"]
-        # Show some debugging
-        display.vvv("databody:", databody)
 
     # If requested state is "absent"
     if state == "absent":

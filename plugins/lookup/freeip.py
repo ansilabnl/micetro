@@ -18,7 +18,6 @@ __metaclass__ = type
 from ansible.errors import AnsibleError, AnsibleModuleError
 from ansible.module_utils.common.text.converters import to_text
 from ansible.plugins.lookup import LookupBase
-from ansible.utils.display import Display
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     TRUEFALSE,
@@ -139,9 +138,6 @@ _list:
     0: IP address(es)
 """
 
-# Make display easie
-display = Display()
-
 
 class LookupModule(LookupBase):
     """Extension to the base looup."""
@@ -239,7 +235,6 @@ class LookupModule(LookupBase):
             # Get requested number of free IP addresses
             for dummy in range(multi):
                 result = doapi(url, http_method, mm_provider, databody)
-                display.vvv("loopanswer  = |%s|" % result)
 
                 # If there are no more free IP Addresses, the API returns
                 # an empty result.

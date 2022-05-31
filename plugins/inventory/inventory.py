@@ -29,10 +29,6 @@ from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
 )
 
-# Debugging things
-from ansible.utils.display import Display
-
-display = Display()
 
 DOCUMENTATION = """
     name: inventory
