@@ -1,7 +1,7 @@
 ---
 namespace: ansilabnl
 name: micetro
-version: 1.0.3
+version: 1.0.4
 readme: README.md
 authors:
   - Ton Kersten <t.kersten@atcomputing.nl>
@@ -19,7 +19,7 @@ tags:
   - automation
 repository: https://github.com/ansilabnl/micetro
 homepage: https://menandmice.com/
-documentation: //github.com/ansilabnl/micetro/docs
+documentation: //github.com/ansilabnl/micetro
 issues: https://github.com/ansilabnl/micetro/issues
 dependencies: {}
 build_ignore:
