@@ -1,5 +1,4 @@
 ---
-# .ansible-lint
 exclude_paths:
   - .cache/
   - .github/
@@ -8,6 +7,7 @@ exclude_paths:
   - play_tests/
   - meta/
   - galaxy.yml
+  - .ansible-lint
 
 # parseable: true
 # quiet: true
@@ -62,4 +62,4 @@ offline: false
 # List of additional kind:pattern to be added at the top of the default
 # match list, first match determines the file kind.
 kinds:
-  - playbook: "*.{yml,yaml}"
+  - playbook: "docs/examples/*.{yml,yaml}"
