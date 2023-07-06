@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020-2022, Men&Mice
+# Copyright: (c) 2020-2023, Men&Mice
 # GNU General Public License v3.0
 # see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt
 # All imports
@@ -58,7 +58,7 @@ def doapi(url, method, mm_provider, databody):
                 force_basic_auth=True,
                 url_username=mm_provider["mm_user"],
                 url_password=mm_provider["mm_password"],
-                data=json.dumps(databody),
+                data=json.dumps(databody, ensure_ascii=False).encode("utf8"),
                 validate_certs=False,
                 headers=headers,
             )
