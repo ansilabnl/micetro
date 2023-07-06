@@ -1,3 +1,4 @@
+[#_user]
 === menandmice.ansible_micetro.user
 
 Manage user accounts and user properties on Men&Mice Micetro

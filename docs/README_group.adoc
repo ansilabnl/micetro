@@ -1,3 +1,4 @@
+[#_group]
 === menandmice.ansible_micetro.group
 
 Manage groups on Men&Mice Micetro

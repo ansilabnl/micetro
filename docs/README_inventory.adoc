@@ -1,3 +1,4 @@
+[#_inventory]
 === menandmice.ansible_micetro.inventory plugin
 
 This plugin generates the inventory from Men&Mice Micetro. It supports reading

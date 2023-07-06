@@ -1,3 +1,4 @@
+[#_dhcp]
 === menandmice.ansible_micetro.dhcp
 
 Manage DHCP reservations on Men&Mice Micetro

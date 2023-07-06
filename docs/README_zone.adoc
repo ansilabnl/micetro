@@ -1,3 +1,4 @@
+[#_zone]
 === menandmice.ansible_micetro.zone
 
 Manage DNS zones in Men&Mice Micetro
@@ -12,8 +13,8 @@ Manage DNS zones in Men&Mice Micetro
   string `[Active Directory]` if the zone is integrated in the Active
   Directory.
 - `customproperties`: Custom properties for the zone. These properties
-  must already exist. See also
-  xref:README_props.adoc#menandmice.ansible_micetro.props[menandmice.ansible_micetro.props].
+  must already exist. +
+  See also <<README_props#_props,props>>
 - `dynamic`: Dynamic DNS zone.
 - `masters`: The IP addresses of the master servers if the new zone is
   not a master zone.

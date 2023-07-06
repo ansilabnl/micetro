@@ -1,3 +1,4 @@
+[#_role]
 === menandmice.ansible_micetro.role
 
 Manage roles on Men&Mice Micetro

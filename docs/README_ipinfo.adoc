@@ -1,3 +1,4 @@
+[#_managing_ipinfo]
 === menandmice.ansible_micetro.ipinfo plugin
 
 This Men&Mice IPInfo lookup plugin finds a lot of info about a specified

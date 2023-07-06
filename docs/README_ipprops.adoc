@@ -1,3 +1,4 @@
+[#_ipprops]
 === menandmice.ansible_micetro.ipprops
 
 Set properties on an IP address in Men&Mice Micetro

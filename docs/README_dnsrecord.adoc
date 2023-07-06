@@ -1,3 +1,4 @@
+[#_dnsrecord]
 === menandmice.ansible_micetro.dnsrecord
 
 Manage DNS records in Men&Mice Micetro

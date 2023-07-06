@@ -1,3 +1,4 @@
+[#_micetro]
 == Ansible setup for Men&Mice Micetro
 
 With the Ansible setup for Men&Mice Micetro you can manage a Men&Mice

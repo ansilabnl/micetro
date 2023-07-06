@@ -1,3 +1,4 @@
+[#_props]
 === menandmice.ansible_micetro.props
 
 Manage custom properties in Men&Mice Micetro
