@@ -4,6 +4,18 @@
   connection: local
   become: false
 
+  module_defaults:
+    menandmice.ansible_micetro.dhcp: &menandmice_provider
+      mm_provider: "{{ mm_provider }}"
+    menandmice.ansible_micetro.dnsrecord:
+      <<: *menandmice_provider
+    menandmice.ansible_micetro.ipprops:
+      <<: *menandmice_provider
+    menandmice.ansible_micetro.props:
+      <<: *menandmice_provider
+    menandmice.ansible_micetro.zone:
+      <<: *menandmice_provider
+
   vars:
     network: examplenet
 
