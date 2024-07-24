@@ -3,9 +3,9 @@ include::resources/adocs/includes.adoc[]
 :doctype: book
 :toc: right
 :toclevels: 3
-:organization: Men&Mice
+:organization: Men&Mice / Ton Kersten
 :revnumber: {version} ({localdate})
-:revdate: 2023-07-06
+:revdate: 2024-07-24
 :reproducible:
 :figure-caption: Table
 :figure-caption: Figure
