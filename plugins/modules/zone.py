@@ -130,7 +130,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Release a zone
- ansilabnl.micetro.zone:
+  ansilabnl.micetro.zone:
     state: absent
     name: example.com
     mm_provider:

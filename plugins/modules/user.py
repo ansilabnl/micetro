@@ -100,7 +100,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Add the user 'johnd' as an admin
- ansilabnl.micetro.user:
+  ansilabnl.micetro.user:
     username: johnd
     password: password
     full_name: John Doe
@@ -121,7 +121,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Remove user 'johnd'
- ansilabnl.micetro.user:
+  ansilabnl.micetro.user:
     username: johnd
     state: absent
     mm_provider:

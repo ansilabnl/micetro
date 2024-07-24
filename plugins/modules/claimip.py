@@ -76,7 +76,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Claim IP address
- ansilabnl.micetro.claimip:
+  ansilabnl.micetro.claimip:
     state: present
     ipaddress: 172.16.12.14
     mm_provider:
@@ -86,7 +86,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Release claim on IP addresses
- ansilabnl.micetro.claimip:
+  ansilabnl.micetro.claimip:
     state: present
     ipaddress:
       - 172.16.12.14

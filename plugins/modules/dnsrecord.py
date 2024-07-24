@@ -123,7 +123,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Set DNS record in zone for a defined name
- ansilabnl.micetro.dnsrecord:
+  ansilabnl.micetro.dnsrecord:
     state: present
     name: beatles
     data: 172.16.17.2
@@ -136,7 +136,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Set PTR record in zone for a defined name
- ansilabnl.micetro.dnsrecord:
+  ansilabnl.micetro.dnsrecord:
     state: present
     name: "2.17.16.172.in-addr.arpa."
     data: beatles.example.net.
@@ -149,7 +149,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Set MX record
- ansilabnl.micetro.dnsrecord:
+  ansilabnl.micetro.dnsrecord:
     state: present
     name: beatles
     rrtype: MX

@@ -81,7 +81,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Add the 'local' group
- ansilabnl.micetro.group:
+  ansilabnl.micetro.group:
     name: local
     desc: A local group
     state: present
@@ -96,7 +96,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Remove the 'local' group
- ansilabnl.micetro.group:
+  ansilabnl.micetro.group:
     name: local
     state: absent
     mm_provider:

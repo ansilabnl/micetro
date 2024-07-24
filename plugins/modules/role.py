@@ -81,7 +81,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Add the 'local' role
- ansilabnl.micetro.role:
+  ansilabnl.micetro.role:
     name: local
     desc: A local role
     state: present
@@ -96,7 +96,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Remove the 'local' role
- ansilabnl.micetro.role:
+  ansilabnl.micetro.role:
     name: local
     state: absent
     mm_provider:

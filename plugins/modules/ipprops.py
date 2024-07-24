@@ -80,7 +80,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Set properties on IP
- ansilabnl.micetro.ipprops:
+  ansilabnl.micetro.ipprops:
     state: present
     ipaddress: 172.16.12.14
     properties:

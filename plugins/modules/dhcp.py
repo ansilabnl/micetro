@@ -102,7 +102,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Add a reservation for an IP address
- ansilabnl.micetro.dhcp:
+  ansilabnl.micetro.dhcp:
     state: present
     name: myreservation
     ipaddress: 172.16.17.8

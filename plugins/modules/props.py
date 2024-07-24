@@ -124,7 +124,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Set deinition for custom properties
- ansilabnl.micetro.props:
+  ansilabnl.micetro.props:
     name: location
     state: present
     proptype: text
