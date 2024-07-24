@@ -24,7 +24,7 @@
           - "Python executable  : {{ ansible_facts['python']['executable'] }}"
 
     - name: Add the 'local' role
-      menandmice.ansible_micetro.role:
+      ansilabnl.ansible_micetro.role:
         name: local
         desc: A local role
         state: present
@@ -34,7 +34,7 @@
         mm_provider: "{{ mm_provider }}"
 
     - name: Check idempotency
-      menandmice.ansible_micetro.role:
+      ansilabnl.ansible_micetro.role:
         name: local
         desc: A local role
         state: present
@@ -44,7 +44,7 @@
         mm_provider: "{{ mm_provider }}"
 
     - name: Add nonexisting user to role
-      menandmice.ansible_micetro.role:
+      ansilabnl.ansible_micetro.role:
         name: local
         desc: A local role
         state: present
@@ -54,7 +54,7 @@
       ignore_errors: true # noqa: ignore-errors
 
     - name: Remove the 'local' role
-      menandmice.ansible_micetro.role:
+      ansilabnl.ansible_micetro.role:
         name: local
         state: absent
         mm_provider: "{{ mm_provider }}"
