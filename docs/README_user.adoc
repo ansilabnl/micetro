@@ -1,5 +1,5 @@
 [#_user]
-=== menandmice.ansible_micetro.user
+=== ansilabnl.ansible_micetro.user
 
 Manage user accounts and user properties on Men&Mice Micetro
 
@@ -22,7 +22,7 @@ Manage user accounts and user properties on Men&Mice Micetro
 [source,yaml]
 ----
 - name: Add the user 'johnd' as an admin
-  menandmice.ansible_micetro.user:
+  ansilabnl.ansible_micetro.user:
     username: johnd
     password: password
     full_name: John Doe
@@ -40,7 +40,7 @@ Manage user accounts and user properties on Men&Mice Micetro
   delegate_to: localhost
 
 - name: Remove user 'johnd'
-  menandmice.ansible_micetro.user:
+  ansilabnl.ansible_micetro.user:
     username: johnd
     state: absent
     mm_provider: "{{ mm_provider }}"

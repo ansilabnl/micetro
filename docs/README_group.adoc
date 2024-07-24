@@ -1,5 +1,5 @@
 [#_group]
-=== menandmice.ansible_micetro.group
+=== ansilabnl.ansible_micetro.group
 
 Manage groups on Men&Mice Micetro
 
@@ -18,7 +18,7 @@ Manage groups on Men&Mice Micetro
 [source,yaml]
 ----
 - name: Add the 'local' group
-  menandmice.ansible_micetro.group:
+  ansilabnl.ansible_micetro.group:
     name: local
     desc: A local group
     state: present
@@ -30,7 +30,7 @@ Manage groups on Men&Mice Micetro
   delegate_to: localhost
 
 - name: Remove the 'local' group
-  menandmice.ansible_micetro.group:
+  ansilabnl.ansible_micetro.group:
     name: local
     state: absent
     mm_provider: "{{ mm_provider }}"
