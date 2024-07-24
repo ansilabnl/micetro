@@ -84,7 +84,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: Manage DHCP scope without options using defaults
-  ansilabnl.ansible_micetro.dhcpscope:
+  ansilabnl.micetro.dhcpscope:
     name: My DHCP Scope
     range_ref: Ranges/1
     dhcp_server_refs:
@@ -96,7 +96,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Remove DHCP scope using defaults
-  ansilabnl.ansible_micetro.dhcpscope:
+  ansilabnl.micetro.dhcpscope:
     state: absent
     name: My DHCP Scope
     range_ref: Ranges/1
@@ -109,7 +109,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Manage DHCP scope with options using defaults
-  ansilabnl.ansible_micetro.dhcpscope:
+  ansilabnl.micetro.dhcpscope:
     state: present
     name: My DHCP Scope
     range_ref: Ranges/1
@@ -126,7 +126,7 @@ EXAMPLES = r"""
   delegate_to: localhost
 
 - name: Manage DHCP scope with options using all parameters
-  ansilabnl.ansible_micetro.dhcpscope:
+  ansilabnl.micetro.dhcpscope:
     state: present
     name: My DHCP Scope
     description: DHCP scope description
@@ -155,7 +155,7 @@ message:
 
 # All imports
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansilabnl.ansible_micetro.plugins.module_utils.micetro import (
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     get_single_refs
 )

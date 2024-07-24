@@ -1,4 +1,4 @@
-=== ansilabnl.ansible_micetro.dhcpscope
+=== ansilabnl.micetro.dhcpscope
 
 Manage DHCP Scope configuration on Men&Mice Micetro
 
@@ -20,7 +20,7 @@ Manage DHCP Scope configuration on Men&Mice Micetro
 [source,yaml]
 ----
 - name: Manage DHCP scope with options
-  ansilabnl.ansible_micetro.dhcpscope:
+  ansilabnl.micetro.dhcpscope:
     state: present
     name: My DHCP Scope
     range_ref: Ranges/1

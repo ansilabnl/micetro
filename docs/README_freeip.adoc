@@ -1,5 +1,5 @@
 [#_freeip]
-=== ansilabnl.ansible_micetro.freeip plugin
+=== ansilabnl.micetro.freeip plugin
 
 This Men&Mice FreeIP lookup plugin finds one or more free IP addresses
 in a certain network, defined in Men&Mice Micetro.
@@ -55,7 +55,7 @@ Example usage:
   tasks:
     - name: Set free IP addresses as a fact
       set_fact:
-        freeips: "{{ query('ansilabnl.ansible_micetro.freeip',
+        freeips: "{{ query('ansilabnl.micetro.freeip',
                            mm_provider,
                            network,
                            multi=15,

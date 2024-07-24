@@ -1,5 +1,5 @@
 [#_zone]
-=== ansilabnl.ansible_micetro.zone
+=== ansilabnl.micetro.zone
 
 Manage DNS zones in Men&Mice Micetro
 
@@ -31,7 +31,7 @@ Manage DNS zones in Men&Mice Micetro
 [source,yaml]
 ----
 - name: Create a new zone
-  ansilabnl.ansible_micetro.zone:
+  ansilabnl.micetro.zone:
     state: present
     name: example.com
     nameserver: ns1.example.com
@@ -42,7 +42,7 @@ Manage DNS zones in Men&Mice Micetro
   delegate_to: localhost
 
 - name: Release a zone
-  ansilabnl.ansible_micetro.zone:
+  ansilabnl.micetro.zone:
     state: absent
     name: example.com
     mm_provider: "{{ mm_provider }}"

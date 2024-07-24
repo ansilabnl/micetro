@@ -24,7 +24,7 @@
           - "Python executable : {{ ansible_facts['python']['executable'] }}"
 
     - name: Add a reservation for an IP address
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: present
         name: myreservation
         ipaddress: 172.16.17.8
@@ -33,7 +33,7 @@
       delegate_to: localhost
 
     - name: Check idempotentie
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: present
         name: myreservation
         ipaddress: 172.16.17.8
@@ -45,7 +45,7 @@
     # would alter the reservation. To achieve this, release the reservation
     # and reclaim it.
     - name: Change mac
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: present
         name: myreservation
         ipaddress: 172.16.17.8
@@ -54,7 +54,7 @@
       delegate_to: localhost
 
     - name: Change ip
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: present
         name: myreservation
         ipaddress: 172.16.17.9
@@ -63,7 +63,7 @@
       delegate_to: localhost
 
     - name: Change name
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: present
         name: movemyreservation
         ipaddress: 172.16.17.9
@@ -72,7 +72,7 @@
       delegate_to: localhost
 
     - name: Delete reservation (wrong one)
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: absent
         name: movemyreservation
         ipaddress: 172.16.17.9
@@ -81,7 +81,7 @@
       delegate_to: localhost
 
     - name: Delete reservation (correct one)
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: absent
         name: myreservation
         ipaddress: 172.16.17.8
@@ -90,7 +90,7 @@
       delegate_to: localhost
 
     - name: Create reservation in invalid range
-      ansilabnl.ansible_micetro.dhcp:
+      ansilabnl.micetro.dhcp:
         state: present
         name: reservationnonet
         ipaddress: 172.16.17.58
