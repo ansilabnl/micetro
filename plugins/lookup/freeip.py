@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020, Men&Mice
+# Copyright: (c) 2020-2025, Men&Mice, Ton Kersten
 # GNU General Public License v3.0
 # see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt
 #
@@ -25,7 +25,6 @@ from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
 
 DOCUMENTATION = r"""
     lookup: freeip
-    author: Ton Kersten <t.kersten@atcomputing.nl> for Men&Mice
     version_added: "2.7"
     short_description: Find free IP address(es) in a given network range in the Micetro
     description:
@@ -37,25 +36,8 @@ DOCUMENTATION = r"""
         In such cases you may want to pass option C(wantlist=True) to the plugin,
         which will result in the record values being returned as a list
         over which you can iterate later on (or use C(query) instead)
+    extends_documentation_fragment: ansilabnl.micetro.micetro
     options:
-      mm_provider:
-        description: Definition of the Micetro API mm_provider
-        type: dict
-        required: True
-        suboptions:
-          mm_url:
-            description: Men&Mice API server to connect to
-            required: True
-            type: str
-          mm_user:
-            description: userid to login with into the API
-            required: True
-            type: str
-          mm_password:
-            description: password to login with into the API
-            required: True
-            type: str
-            no_log: True
       network:
         description:
           - network zone(s) from which the first free IP address is to be found.
@@ -101,7 +83,7 @@ DOCUMENTATION = r"""
 
 EXAMPLES = r"""
 - name: get the first free IP address in a zone
-  debug:
+  ansible.builtin.debug:
     msg: "This is the next free IP: {{ lookup('ansilabnl.micetro.freeip', mm_provider, network) }}"
   vars:
     mm_provider:
@@ -111,7 +93,7 @@ EXAMPLES = r"""
     network: examplenet
 
 - name: get the first free IP addresses in multiple zones
-  debug:
+  ansible.builtin.debug:
     msg: "This is the next free IP: {{ query('ansilabnl.micetro.freeip', mm_provider, network, multi=5, claim=60) }}"
   vars:
     mm_url: http://micetro.example.net
@@ -122,7 +104,7 @@ EXAMPLES = r"""
       - examplecom
 
   - name: get the first free IP address in a zone and ping
-    debug:
+    ansible.builtin.debug:
       msg: "This is the next free IP: {{ query('ansilabnl.micetro.freeip', mm_provider, network, ping=True) }}"
     vars:
       mm_url: http://micetro.example.net

@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020-2023, Men&Mice
+# Copyright: (c) 2020-2025, Men&Mice, Ton Kersten
 # GNU General Public License v3.0
 # see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt
 # All imports
+"""Utils for all Men&Mice modules."""
+
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 

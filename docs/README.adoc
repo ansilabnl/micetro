@@ -5,7 +5,7 @@ include::resources/adocs/includes.adoc[]
 :toclevels: 3
 :organization: Men&Mice / Ton Kersten
 :revnumber: {version} ({localdate})
-:revdate: 2024-07-24
+:revdate: 2025-01-24
 :reproducible:
 :figure-caption: Table
 :figure-caption: Figure
@@ -19,6 +19,7 @@ include::resources/adocs/includes.adoc[]
 :compress:
 :xrefstyle: full
 :experimental:
+:pdf-version: 1.7
 
 // Font icons are supported and the Foundation Icon set is
 // used as the default.

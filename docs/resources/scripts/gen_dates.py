@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
+"""Generate all dates for Asciidoctor."""
 
 import sys
 import os
 import calendar
-import getopt
 import time
 import locale
 
 def setdates(usedate=None, r_lang='english'):
+    """Convert all dates to document format."""
     docdate = {}
 
     # If the replacement-date is defined, make sure we

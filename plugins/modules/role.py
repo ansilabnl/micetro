@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020-2023, Men&Mice
+# Copyright: (c) 2020-2025, Men&Mice, Ton Kersten
 # GNU General Public License v3.0
 # see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt
 """Ansible role module.
@@ -25,14 +25,13 @@ from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
 DOCUMENTATION = r"""
   module: role
   short_description: Manage roles on the Micetro
-  author:
-    - Ton Kersten <t.kersten@atcomputing.nl> for Men&Mice
   version_added: "2.7"
   description:
     - Manage roles on a Micetro installation
   notes:
     - When in check mode, this module pretends to have done things
       and returns C(changed = True).
+  extends_documentation_fragment: ansilabnl.micetro.micetro
   options:
     state:
       description:
@@ -59,24 +58,6 @@ DOCUMENTATION = r"""
       description: List of groups to add to this role.
       type: list
       required: False
-    mm_provider:
-      description: Definition of the Micetro API mm_provider.
-      type: dict
-      required: True
-      suboptions:
-        mm_url:
-          description: Men&Mice API server to connect to.
-          required: True
-          type: str
-        mm_user:
-          description: userid to login with into the API.
-          required: True
-          type: str
-        mm_password:
-          description: password to login with into the API.
-          required: True
-          type: str
-          no_log: True
 """
 
 EXAMPLES = r"""

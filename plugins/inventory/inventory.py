@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020-2023, Men&Mice
+# Copyright: (c) 2020-2025, Men&Mice, Ton Kersten
 # GNU General Public License v3.0
 # see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt
 #
@@ -164,6 +164,7 @@ def _sanitize(data):
 
 
 class InventoryModule(BaseInventoryPlugin, Cacheable):
+    """Extend the Inventory class."""
     # used internally by Ansible, it should match the file name
     # Is not required
     NAME = "micetro_inventory"
@@ -338,6 +339,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
         return invent
 
     def parse(self, inventory, loader, path, cache=True):
+        """Parse the inventory."""
         super(InventoryModule, self).parse(inventory, loader, path, cache)
         if not self.no_config_file_supplied and os.path.isfile(path):
             self._read_config_data(path)

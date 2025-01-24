@@ -16,15 +16,16 @@ __metaclass__ = type
 DOCUMENTATION = r"""
   module: dhcpscope
   short_description: Manage DHCP scope(s) in the Micetro
-  author:
-    - Adam Brauns (@abrauns-silex)
   version_added: "1.0.8"
+  author:
+      - Adam Brauns (@abrauns-silex)
   description:
     - Create/delete DHCP scope(s) in Micetro.
     - Manage DHCP scope options.
   notes:
     - When in check mode, this module pretends to have done things
       and returns C(changed = True).
+  extends_documentation_fragment: ansilabnl.micetro.micetro
   options:
     state:
       description: The state of the DHCP scope
@@ -63,23 +64,6 @@ DOCUMENTATION = r"""
       description: Save comment left in Micetro
       type: str
       default: Ansible API
-    mm_provider:
-      description: Definition of the Micetro API mm_provider.
-      type: dict
-      required: true
-      suboptions:
-        mm_url:
-          description: Men&Mice API server to connect to.
-          type: str
-          required: true
-        mm_user:
-          type: str
-          description: userid to login with into the API.
-          required: true
-        mm_password:
-          type: str
-          description: password to login with into the API.
-          required: true
 """
 
 EXAMPLES = r"""
@@ -356,6 +340,7 @@ def run_module():
 
 
 def main():
+    """The main program."""
     run_module()
 
 
