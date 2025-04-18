@@ -1,7 +1,10 @@
 # Changelog
 
+- abrauns-silex - 2025-04-08 - Version 1.0.13
+  * Added dhcpscope_info module
+
 - TonK - 2024-08-16 - Version 1.0.14
-  * Refix bug 7 by andrew McCann
+  * Refix bug 7 by Andrew McCann
 
 - TonK - 2024-08-16 - Version 1.0.13
   * Fix multiple domain bug as suggested by Andrew McCann
