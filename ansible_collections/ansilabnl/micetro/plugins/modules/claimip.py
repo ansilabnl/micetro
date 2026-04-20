@@ -36,7 +36,7 @@ DOCUMENTATION = r"""
   options:
     state:
       description: The state of the claim.
-      type: bool
+      type: str
       required: False
       choices: [ absent, present ]
       default: present
@@ -100,7 +100,7 @@ def run_module():
             default="present",
             choices=["absent", "present"],
         ),
-        ipaddress=dict(type="list", required=True),
+        ipaddress=dict(type="list", elements="str", required=True),
         customproperties=dict(type="dict", required=False),
         mm_provider=dict(
             type="dict",

@@ -35,7 +35,7 @@ DOCUMENTATION = r"""
   options:
     state:
       description: The state of the zone.
-      type: bool
+      type: str
       required: False
       choices: [ absent, present ]
       default: present

@@ -41,7 +41,7 @@ DOCUMENTATION = r"""
   options:
     state:
       description: The state of the reservation.
-      type: bool
+      type: str
       required: False
       choices: [ absent, present ]
       default: present
@@ -117,7 +117,7 @@ def run_module():
             choices=["absent", "present"],
         ),
         name=dict(type="str", required=True),
-        ipaddress=dict(type="list", required=True),
+        ipaddress=dict(type="list", elements="str", required=True),
         macaddress=dict(type="str", required=True),
         ddnshost=dict(type="str", required=False, default=""),
         filename=dict(type="str", required=False, default=""),

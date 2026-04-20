@@ -34,7 +34,7 @@ DOCUMENTATION = r"""
   options:
     state:
       description: The state of the properties or properties.
-      type: bool
+      type: str
       required: False
       choices: [ absent, present ]
       default: present
@@ -178,8 +178,8 @@ def run_module():
         system=dict(type="bool", required=False, default=False),
         updateexisting=dict(type="bool", required=False, default=False),
         defaultvalue=dict(type="str", required=False, default=""),
-        cloudtags=dict(type="list", required=False, default=[]),
-        listitems=dict(type="list", required=False, default=[]),
+        cloudtags=dict(type="list", elements="str", required=False, default=[]),
+        listitems=dict(type="list", elements="str", required=False, default=[]),
         mm_provider=dict(
             type="dict",
             required=True,
