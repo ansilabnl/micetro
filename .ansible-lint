@@ -8,6 +8,7 @@ exclude_paths:
   - meta/
   - galaxy.yml
   - .ansible-lint
+  - .yamllint
 
 # parseable: true
 # quiet: true
