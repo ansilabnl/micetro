@@ -10,6 +10,7 @@ Part of the Men&Mice Ansible integration
 Module to claim IP addresses in DHCP in the Micetro
 """
 
+
 class ModuleDocFragment(object):
     """Extend the document class."""
 

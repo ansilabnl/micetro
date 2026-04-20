@@ -19,10 +19,8 @@ __metaclass__ = type
 # All imports
 from ansible.module_utils.basic import AnsibleModule
 # Provide a Python 3 compatible alias for 'unicode' used in older code
-try:
-    unicode
-except NameError:
-    unicode = str
+import builtins as _builtins
+unicode = getattr(_builtins, 'unicode', str)
 
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
