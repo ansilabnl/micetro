@@ -31,8 +31,8 @@ from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
 
 DOCUMENTATION = """
     name: inventory
-    plugin_type: inventory
-    author: Ton Kersten <t.kersten@atcomputing.nl> for Men&Mice
+    author:
+      - Ton Kersten <t.kersten@atcomputing.nl>
     short_description: Ansible dynamic inventory plugin for Men&Mice Micetro.
     version_added: "2.7"
     extends_documentation_fragment:
@@ -40,13 +40,6 @@ DOCUMENTATION = """
     description:
       - Reads inventories from Micetro.
       - Supports reading configuration from both YAML config file and environment variables.
-      - If reading from the YAML file, the file name must be
-        micetro.(yml|yaml), micetro_inv.(yml|yaml) or micetro_inventory.(yml|yaml), the path
-        in the command would be /path/to/micetro.(yml|yaml).
-        If some arguments in the config file are missing, this plugin will try to fill in
-        missing arguments by reading from environment variables.
-      - If reading configurations from environment variables, the path in the
-        command must be @micetro_inventory.
     options:
       plugin:
         description: the name of this plugin, it should always be set to 'ansilabnl.micetro.inventory'
