@@ -2,8 +2,8 @@
     "docs": "https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/pylint.html", 
     "results": [
         {
-            "message": "The test `ansible-test sanity --test pylint` [[explain](https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/pylint.html)] failed with 1 error:", 
-            "output": "plugins/modules/dhcp.py:23:4: used-before-assignment: Using variable 'unicode' before assignment"
+            "message": "The test `ansible-test sanity --test pylint` [[explain](https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/pylint.html)] failed with 12 errors:", 
+            "output": "plugins/inventory/inventory.py:21:4: syntax-error: Parsing failed: 'unexpected indent (inventory, line 21)'\nplugins/lookup/freeip.py:16:4: syntax-error: Parsing failed: 'unexpected indent (freeip, line 16)'\nplugins/lookup/ipinfo.py:16:4: syntax-error: Parsing failed: 'unexpected indent (ipinfo, line 16)'\nplugins/modules/claimip.py:18:4: syntax-error: Parsing failed: 'unexpected indent (claimip, line 18)'\nplugins/modules/dhcp.py:22:4: syntax-error: Parsing failed: 'unexpected indent (dhcp, line 22)'\nplugins/modules/dnsrecord.py:18:4: syntax-error: Parsing failed: 'unexpected indent (dnsrecord, line 18)'\nplugins/modules/group.py:18:4: syntax-error: Parsing failed: 'unexpected indent (group, line 18)'\nplugins/modules/ipprops.py:18:4: syntax-error: Parsing failed: 'unexpected indent (ipprops, line 18)'\nplugins/modules/props.py:18:4: syntax-error: Parsing failed: 'unexpected indent (props, line 18)'\nplugins/modules/role.py:18:4: syntax-error: Parsing failed: 'unexpected indent (role, line 18)'\nplugins/modules/user.py:18:4: syntax-error: Parsing failed: 'unexpected indent (user, line 18)'\nplugins/modules/zone.py:18:4: syntax-error: Parsing failed: 'unexpected indent (zone, line 18)'"
         }
     ], 
     "verified": false

@@ -1,0 +1,10 @@
+{
+    "docs": "https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/ansible-doc.html", 
+    "results": [
+        {
+            "message": "The test `ansible-test sanity --test ansible-doc` [[explain](https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/ansible-doc.html)] failed with the error:", 
+            "output": "Command \"ansible-doc -t inventory ansilabnl.micetro.inventory\" returned exit status 1.\n>>> Standard Error\n[ERROR]: inventory ansilabnl.micetro.inventory Missing documentation (or could not parse documentation): inventory plugin 'ansilabnl.micetro.inventory' did not contain a DOCUMENTATION attribute in '/home/tonk/develop/collections/ansilabnl/micetro/ansible_collections/ansilabnl/micetro/plugins/inventory/inventory.py': Unable to parse documentation in python file '/home/tonk/develop/collections/ansilabnl/micetro/ansible_collections/ansilabnl/micetro/plugins/inventory/inventory.py': unexpected indent (<unknown>, line 21)"
+        }
+    ], 
+    "verified": false
+}

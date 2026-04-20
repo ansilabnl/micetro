@@ -13,8 +13,8 @@ in the Micetro.
 
 
 __metaclass__ = type
-    doapi,
-)
+
+# All imports (moved below RETURN per Ansible validate-modules)
 
 DOCUMENTATION = r"""
     lookup: ipinfo

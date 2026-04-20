@@ -18,8 +18,6 @@ __metaclass__ = type
 
 
 # from ansible.module_utils.urls import urllib_error, socket, httplib
-    doapi,
-)
 
 
 DOCUMENTATION = """
@@ -147,6 +145,11 @@ def _sanitize(data):
 
     return data
 
+
+from ansible import constants as C
+from ansible.errors import AnsibleParserError
+from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi
 
 class InventoryModule(BaseInventoryPlugin, Cacheable):
     """Extend the Inventory class."""

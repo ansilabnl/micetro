@@ -14,10 +14,7 @@ Module to manage groups in the Micetro.
 
 __metaclass__ = type
 
-# All imports
-    doapi,
-    getrefs,
-)
+# All imports (moved below RETURN per Ansible validate-modules)
 
 DOCUMENTATION = r"""
   module: group
