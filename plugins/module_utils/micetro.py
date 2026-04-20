@@ -1,26 +1,33 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020-2025, Men&Mice, Ton Kersten
+# Copyright: (c) 2020-2026, Men&Mice, Ton Kersten
 # GNU General Public License v3.0
 # see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt
-# All imports
-"""Utils for all Men&Mice modules."""
+"""Utils for all Men&Mice modules.
+
+This module implements a robust API helper for the Men&Mice Micetro API.
+Changes made:
+- Fixed retry logic and moved return outside retry loop
+- Only mark changed for mutating HTTP methods
+- Use stdlib json and urllib for compatibility
+- Allow toggling of certificate validation via mm_provider["mm_validate_certs"]
+- More defensive HTTP error handling
+"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import time
+import json
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote_plus
+
 from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_native
 from ansible.module_utils.connection import ConnectionError
-from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 from ansible.module_utils.urls import open_url, SSLValidationError
 
-try:
-    from ansible.utils_utils.common import json
-except ImportError:
-    import json
 
 # The API sometimes has another concept of true and false than Python
 # does, so 0 is true and 1 is false.
@@ -30,132 +37,156 @@ TRUEFALSE = {
 }
 
 
+MUTATING_METHODS = {"POST", "PUT", "DELETE", "PATCH"}
+
+
+def _build_api_url(mm_url, path):
+    """Build a sane API URL from base and relative path without double slashes."""
+    return "%s/mmws/api/%s" % (mm_url.rstrip("/"), path.lstrip("/"))
+
+
 def doapi(url, method, mm_provider, databody):
     """Run an API call.
 
     Parameters:
-        - url          -> Relative URL for the API entry point
+        - url          -> Relative URL for the API entry point (may include query parts)
         - method       -> The API method (GET, POST, DELETE,...)
-        - mm_provider  -> Needed credentials for the API mm_provider
-        - databody     -> Data needed for the API to perform the task
+        - mm_provider  -> Dict with keys: mm_url, mm_user, mm_password, optional mm_validate_certs
+        - databody     -> Data needed for the API to perform the task (dict or None)
 
     Returns:
-        - The response from the API call
-        - The Ansible result dict
+        - A dict with keys like 'message', 'changed', 'warnings' etc.
 
-    When connection errors arise, there will be a multiple of tries,
-    each a couple of seconds apart, this to handle high-availability
+    Retries on connection errors up to `maxtries` with a small backoff.
     """
     headers = {"Content-Type": "application/json"}
-    apiurl = "%s/mmws/api/%s" % (mm_provider["mm_url"], url)
-    result = {}
+    apiurl = _build_api_url(mm_provider["mm_url"], url)
+    result = {"changed": False}
 
-    # Maximum and current number of tries to connect to the Men&Mice API
     maxtries = 5
-    tries = 0
+    backoff = 0.25
 
-    while tries <= 4:
-        tries += 1
+    # validate_certs default to True unless explicitly set False in mm_provider
+    validate_certs = mm_provider.get("mm_validate_certs", True)
+
+    last_exception = None
+
+    for attempt in range(1, maxtries + 1):
         try:
+            # Only send data for non-GET methods and when databody is provided
+            data = None
+            if databody is not None and method.upper() != "GET":
+                data = json.dumps(databody, ensure_ascii=False).encode("utf8")
+
             resp = open_url(
                 apiurl,
                 method=method,
                 force_basic_auth=True,
-                url_username=mm_provider["mm_user"],
-                url_password=mm_provider["mm_password"],
-                data=json.dumps(databody, ensure_ascii=False).encode("utf8"),
-                validate_certs=False,
+                url_username=mm_provider.get("mm_user"),
+                url_password=mm_provider.get("mm_password"),
+                data=data,
+                validate_certs=validate_certs,
                 headers=headers,
             )
 
-            # Response codes of the API are:
-            #  - 200 => All OK, data returned in the body
-            #  - 204 => All OK, no data returned in the body
-            #  - *   => Something is wrong, error data in the body
-            # But sometimes there is a situation where the response code
-            # was 201 and with data in the body, so that is picked up as well
-
-            # Get all API data and format return message
             response = resp.read()
-            if resp.code == 200:
-                # 200 => Data in the body
-                # Sometimes (older Python) the data is not a string but a
-                # byte array.
-                if isinstance(response, bytes):
+            if isinstance(response, bytes):
+                try:
                     response = response.decode("utf8")
-                result["message"] = json.loads(response)
-            elif resp.code == 201:
-                # 201 => Sometimes data in the body??
+                except Exception:
+                    # fallback to native representation
+                    response = to_native(response)
+
+            # Parse response based on status code
+            code = getattr(resp, "code", None)
+            if code == 200:
                 try:
                     result["message"] = json.loads(response)
-                except ValueError:
-                    result["message"] = ""
-            else:
-                # No response from API (204 => No data)
+                except Exception:
+                    result["message"] = response
+            elif code == 201:
                 try:
-                    result["message"] = resp.reason
-                except AttributeError:
-                    result["message"] = ""
-            result["changed"] = True
+                    result["message"] = json.loads(response)
+                except Exception:
+                    result["message"] = response or ""
+            else:
+                # Could be 204 No Content or other informational codes
+                reason = getattr(resp, "reason", None)
+                result["message"] = reason or response or ""
+
+            # Only mark changed for mutating methods
+            if method and method.upper() in MUTATING_METHODS:
+                result["changed"] = True
+
+            # Normal exit from retry loop
+            last_exception = None
+            break
+
         except HTTPError as err:
-            errbody = json.loads(err.read().decode())
-            result["changed"] = False
-            result["warnings"] = "%s: %s (%s)" % (
-                err.msg,
-                errbody["error"]["message"],
-                errbody["error"]["code"],
-            )
+            # HTTPError may contain a body with JSON error details
+            try:
+                body = err.read()
+                if isinstance(body, bytes):
+                    body = body.decode("utf8")
+                errbody = json.loads(body)
+                err_msg = errbody.get("error", {})
+                result["warnings"] = "%s: %s (%s)" % (
+                    getattr(err, "msg", "HTTPError"),
+                    err_msg.get("message", body),
+                    err_msg.get("code", ""),
+                )
+            except Exception:
+                # If we can't parse the body, return the HTTP error message
+                result["warnings"] = "%s: %s" % (
+                    getattr(err, "msg", "HTTPError"),
+                    to_native(err)
+                )
+
+            # Do not retry on HTTP errors (they are application-level)
+            last_exception = None
+            break
+
         except URLError as err:
-            raise AnsibleError(
-                "Failed lookup url for %s : %s" % (apiurl, to_native(err))
-            )
+            last_exception = err
+            # URLError is often fatal for URL resolution; do not retry
+            raise AnsibleError("Failed lookup url for %s : %s" % (apiurl, to_native(err)))
+
         except SSLValidationError as err:
             raise AnsibleError(
                 "Error validating the server's certificate for %s: %s"
                 % (apiurl, to_native(err))
             )
+
         except ConnectionError as err:
-            if tries == maxtries:
-                raise AnsibleError(
-                    "Error connecting to %s: %s" % (apiurl, to_native(err))
-                )
-            # There was a connection error, wait a little and retry
-            time.sleep(0.25)
+            last_exception = err
+            if attempt == maxtries:
+                raise AnsibleError("Error connecting to %s: %s" % (apiurl, to_native(err)))
+            # Backoff and retry
+            time.sleep(backoff)
+            backoff *= 2
+            continue
 
-        if result.get("message", "") == "No Content":
-            result["message"] = ""
+    # If we exhausted retries and still have an exception attached, raise
+    if last_exception is not None:
+        raise AnsibleError("Failed to contact %s: %s" % (apiurl, to_native(last_exception)))
 
-        return result
+    # Normalize 'No Content' message
+    if result.get("message", "") == "No Content":
+        result["message"] = ""
+
+    return result
 
 
 def getrefs(objtype, mm_provider):
-    """Get all objects of a certain type.
-
-    Parameters
-        - objtype  -> Object type to get all refs for (User, Group, ...)
-        - mm_provider -> Needed credentials for the API mm_provider
-
-    Returns:
-        - The response from the API call
-        - The Ansible result dict
-    """
-    return doapi(objtype, "GET", mm_provider, {})
+    """Get all objects of a certain type."""
+    return doapi(objtype, "GET", mm_provider, None)
 
 
 def get_single_refs(objname, mm_provider):
-    """Get all information about a single object.
-
-    Parameters
-        - objname  -> Object name to get all refs for (IPAMRecords/172.16.17.201)
-        - mm_provider -> Needed credentials for the API mm_provider
-
-    Returns:
-        - The response from the API call
-        - The Ansible result dict
-    """
-    resp = doapi(objname, "GET", mm_provider, {})
+    """Get all information about a single object."""
+    resp = doapi(objname, "GET", mm_provider, None)
     if resp.get("message"):
-        return resp["message"]["result"]
+        return resp["message"].get("result", resp["message"])
 
     if resp.get("warnings"):
         resp["invalid"] = True
@@ -166,19 +197,15 @@ def get_single_refs(objname, mm_provider):
 
 def get_dhcp_scopes(mm_provider, ipaddress):
     """Given an IP Address, find the DHCP scopes."""
-    url = "Ranges?filter=%s" % ipaddress
+    # Ensure ipaddress is safely quoted when inserted into query strings
+    url = "Ranges?filter=%s" % quote_plus(ipaddress)
 
-    # Get the information of this IP range.
-    # I'm not sure if an IP address can be part of multiple DHCP
-    # scopes, but in the API it's defined as a list, so find them all.
-    resp = doapi(url, "GET", mm_provider, {})
+    resp = doapi(url, "GET", mm_provider, None)
 
-    # Gather all DHCP scopes for this IP address
     scopes = []
-    if resp:
-        for dhcpranges in resp["message"]["result"]["ranges"]:
-            for scope in dhcpranges["dhcpScopes"]:
-                scopes.append(scope["ref"])
+    if resp and resp.get("message"):
+        for dhcpranges in resp["message"].get("result", {}).get("ranges", []):
+            for scope in dhcpranges.get("dhcpScopes", []):
+                scopes.append(scope.get("ref"))
 
-    # Return all scopes
     return scopes
