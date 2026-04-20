@@ -46,7 +46,7 @@ DOCUMENTATION = r"""
       type: str
       required: True
       aliases: [ group ]
-    descr:
+    desc:
       description: Description of the group.
       required: False
       type: str
@@ -107,8 +107,8 @@ def run_module():
         ),
         name=dict(type="str", required=True, aliases=["group"]),
         desc=dict(type="str", required=False),
-        users=dict(type="list", required=False),
-        roles=dict(type="list", required=False),
+        users=dict(type="list", elements="str", required=False),
+        roles=dict(type="list", elements="str", required=False),
         mm_provider=dict(
             type="dict",
             required=True,

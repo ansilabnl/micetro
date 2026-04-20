@@ -46,7 +46,7 @@ DOCUMENTATION = r"""
       type: str
       required: True
       aliases: [ role ]
-    descr:
+    desc:
       description: Description of the role.
       required: False
       type: str
@@ -107,8 +107,8 @@ def run_module():
         ),
         name=dict(type="str", required=True, aliases=["role"]),
         desc=dict(type="str", required=False),
-        users=dict(type="list", required=False),
-        groups=dict(type="list", required=False),
+        users=dict(type="list", elements="str", required=False),
+        groups=dict(type="list", elements="str", required=False),
         deleteunspecified=dict(type="bool", required=False, default=False),
         mm_provider=dict(
             type="dict",

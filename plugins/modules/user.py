@@ -42,7 +42,7 @@ DOCUMENTATION = r"""
       required: False
       choices: [ absent, present ]
       default: present
-    name:
+    username:
       description:
         - Name of the user to create, remove or modify.
       type: str
@@ -71,7 +71,7 @@ DOCUMENTATION = r"""
     groups:
       description: Make the user a member of these groups.
       required: False
-      type:
+      type: list
       elements: str
     roles:
       description: Make the user a member of these roles.
@@ -137,8 +137,8 @@ def run_module():
         desc=dict(type="str", required=False),
         email=dict(type="str", required=False),
         authentication_type=dict(type="str", required=False),
-        groups=dict(type="list", required=False),
-        roles=dict(type="list", required=False),
+        groups=dict(type="list", elements="str", required=False),
+        roles=dict(type="list", elements="str", required=False),
         mm_provider=dict(
             type="dict",
             required=True,
