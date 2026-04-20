@@ -1,0 +1,306 @@
+{
+ "files": [
+  {
+   "name": ".",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible-lint",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "67b08294f5b4e35eeda10b5c3a18e68cb16845325ac75514d4b75d25667eda02",
+   "format": 1
+  },
+  {
+   "name": ".gitignore",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "63b7a10c278a5b8c96360eaafe6332e2de91754991d82d8812786b020e3f1a91",
+   "format": 1
+  },
+  {
+   "name": "CHANGELOG.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "d1c56543d407343d446dc58e69e09e2bfee217728f2d36c11e27cdc14e49e067",
+   "format": 1
+  },
+  {
+   "name": "LICENSE.GPL3",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "08a803192a871b0834f45d52a81387f26e186aa771dd50a285594e76bb566f02",
+   "format": 1
+  },
+  {
+   "name": "README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "5b8e95f12d62ba1969ef4c4f2052d1c1219639ab3a39fdc0463d3be8c013ec74",
+   "format": 1
+  },
+  {
+   "name": "meta",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "meta/runtime.yml",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "df18179bb2f5447a56ac92261a911649b96821c0b2c08eea62d5cc6b0195203f",
+   "format": 1
+  },
+  {
+   "name": "micetro.yml-sample",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0e7613f9d9662e06285fd54079d5df63b21cc050f7f8b9d464fc987fc65e52ea",
+   "format": 1
+  },
+  {
+   "name": "plugins",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/README.md",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "cfae1756098046c535c726fa62559fd98bf3a47e891760b2f4667c96c94beec9",
+   "format": 1
+  },
+  {
+   "name": "plugins/doc_fragments",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/doc_fragments/micetro.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "3601082d25b8bb8706d29602baceb4e2bea711b3b66cbaa06c7db5f290aa6ea3",
+   "format": 1
+  },
+  {
+   "name": "plugins/inventory",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/inventory/inventory.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "2a545d836b3b5e5405ca2fb33b64a0ad2212b4a00067aabaf39ca2bd9d38cdc4",
+   "format": 1
+  },
+  {
+   "name": "plugins/lookup",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/lookup/freeip.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "dfa9959d0fcd8c71ec524914228ddbf6c8a738bdaeb8975c18f6d827796e26d6",
+   "format": 1
+  },
+  {
+   "name": "plugins/lookup/ipinfo.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "fec75a4d3fd7932e48d2138d59b792e83f3abd8833abeb472de41081465507a4",
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/module_utils/micetro.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0263b3b1e7f1db226ea828e5fc404746476b775694fc8553f76fb658f580a9fc",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/claimip.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "dff1a96d9d90f822eff31c095498aaa2d89b8fdc58216709cea9b53805796fa0",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/dhcp.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "648b0db34a4fa18c7a296f52327a58afbb7ac947b33cc915f3dbe5774500c6d8",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/dhcpscope.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "5c3445650c9d53950f4a028c50ce498350d7196235f786219d2e3baac7665548",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/dhcpscope_info.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "fda7edbbbe243ac08bf91d2a7597e881f97e20e9c6d8cbfc9480a921f949f5e9",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/dnsrecord.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "1ff9f331aac14ef8d346652cf1628636ae5b4384994f66daf1513cb092238da7",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/group.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "2f6516d69054ef7b38daf9a33a79c608f2a6b1500be8979dcfa0391d28c7fad5",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/ipprops.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "4b759aacb5232910b7c525778ca7195bd1d48e44390b7cecd4e410895eb5eedf",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/props.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "82ea9b48f8b6f42596797b1de67c3261fdcc0406b8374901946b1f459a59830b",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/role.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "0b5ca136a443fc092efe4d02d673bcb9655a37a0a0cbb7281975d2c7f1651e03",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/user.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e5df9b1b309155c432258fabc3305a229192535192252d499cfff3d81308efcf",
+   "format": 1
+  },
+  {
+   "name": "plugins/modules/zone.py",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "c43087ae58c6abebb3e66c940f63353ab5d7b4ad504f8f37136099b63b922608",
+   "format": 1
+  },
+  {
+   "name": "requirements.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "6cfd68f9160b620f26d34a82dc0f6bee28e97d6e78f61774bba63dbb143144ae",
+   "format": 1
+  },
+  {
+   "name": "test-requirements.txt",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "15dee4efbbcb82f0b264d19cffd05aa1d3420e789c4cc55c51e4ce8a5392fd96",
+   "format": 1
+  },
+  {
+   "name": "tox.ini",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "4fa6fd773c3f5a4c482e151734a701cb5eef393cd568e3deab29aa73b38f5446",
+   "format": 1
+  },
+  {
+   "name": ".ansible",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible/roles",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible/collections",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible/collections/ansible_collections",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible/collections/ansible_collections/ansilabnl",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible/modules",
+   "ftype": "dir",
+   "chksum_type": null,
+   "chksum_sha256": null,
+   "format": 1
+  },
+  {
+   "name": ".ansible/.lock",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "format": 1
+  },
+  {
+   "name": ".yamllint",
+   "ftype": "file",
+   "chksum_type": "sha256",
+   "chksum_sha256": "70535344609cd80083a6c4755c158f96c536d9bf53dd91261d5e16310c242703",
+   "format": 1
+  }
+ ],
+ "format": 1
+}

@@ -1,0 +1,39 @@
+{
+ "collection_info": {
+  "namespace": "ansilabnl",
+  "name": "micetro",
+  "version": "1.0.15",
+  "authors": [
+   "Ton Kersten <t.kersten@atcomputing.nl>",
+   "Adam Brauns (@abrauns-silex)"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "men_and_mice",
+   "micetro",
+   "dns",
+   "dhcp",
+   "ipam",
+   "ansible",
+   "automation"
+  ],
+  "description": "Collection to manage the Men&Mice Micetro environment with Ansible",
+  "license": [
+   "GPL-3.0-only"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://github.com/ansilabnl/micetro",
+  "documentation": "//github.com/ansilabnl/micetro",
+  "homepage": "https://menandmice.com/",
+  "issues": "https://github.com/ansilabnl/micetro/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "ed95c4f3d3006ff8ced99c17d9a94bce7fc4617dea984a0d63c08f9b9e1708dd",
+  "format": 1
+ },
+ "format": 1
+}

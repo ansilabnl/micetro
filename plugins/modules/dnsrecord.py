@@ -38,7 +38,7 @@ DOCUMENTATION = r"""
   options:
     state:
         description: The state of the properties.
-        type: bool
+        type: str
         required: False
         choices: [ absent, present ]
         default: present

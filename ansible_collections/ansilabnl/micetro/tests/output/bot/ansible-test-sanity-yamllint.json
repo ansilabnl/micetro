@@ -1,0 +1,10 @@
+{
+    "docs": "https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/yamllint.html", 
+    "results": [
+        {
+            "message": "The test `ansible-test sanity --test yamllint` [[explain](https://docs.ansible.com/ansible-core/2.20/dev_guide/testing/sanity/yamllint.html)] failed with 6 errors:", 
+            "output": "plugins/inventory/inventory.py:118:1: error: EXAMPLES: syntax error: could not find expected ':' (syntax)\nplugins/inventory/inventory.py:118:1: unparsable-with-libyaml: EXAMPLES: while scanning a simple key could not find expected ':'\nplugins/lookup/freeip.py:105:3: error: EXAMPLES: syntax error: expected <block end>, but found '-' (syntax)\nplugins/lookup/freeip.py:105:3: unparsable-with-libyaml: EXAMPLES: while parsing a block mapping did not find expected key\nplugins/modules/zone.py:100:2: error: EXAMPLES: syntax error: expected <block end>, but found '<block mapping start>' (syntax)\nplugins/modules/zone.py:100:2: unparsable-with-libyaml: EXAMPLES: while parsing a block collection did not find expected '-' indicator"
+        }
+    ], 
+    "verified": false
+}
