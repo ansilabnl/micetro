@@ -1,4 +1,3 @@
-#!/usr/bin/python
 """Generate all dates for Asciidoctor."""
 
 import sys
