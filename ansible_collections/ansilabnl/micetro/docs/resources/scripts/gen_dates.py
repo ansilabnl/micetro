@@ -6,6 +6,7 @@ import calendar
 import time
 import locale
 
+
 def setdates(usedate=None, r_lang='english'):
     """Convert all dates to document format."""
     docdate = {}
@@ -31,64 +32,64 @@ def setdates(usedate=None, r_lang='english'):
     curdate = time.localtime(calendar.timegm(curdate))
 
     docdate['r_year'] = {}
-    docdate['r_year']['desc']           = 'Year in 4 digits'
-    docdate['r_year']['val']            = "%04d" % curdate.tm_year
+    docdate['r_year']['desc'] = 'Year in 4 digits'
+    docdate['r_year']['val'] = "%04d" % curdate.tm_year
 
     docdate['r_month'] = {}
-    docdate['r_month']['desc']          = 'Month in 2 digits'
-    docdate['r_month']['val']           = "%02d" % curdate.tm_mon
+    docdate['r_month']['desc'] = 'Month in 2 digits'
+    docdate['r_month']['val'] = "%02d" % curdate.tm_mon
 
     docdate['r_mday'] = {}
-    docdate['r_mday']['desc']           = 'Day in the month in 2 digits'
-    docdate['r_mday']['val']            = "%02d" % curdate.tm_mday
+    docdate['r_mday']['desc'] = 'Day in the month in 2 digits'
+    docdate['r_mday']['val'] = "%02d" % curdate.tm_mday
 
     docdate['r_dayname'] = {}
-    docdate['r_dayname']['desc']        = 'Full name of the day'
-    docdate['r_dayname']['val']         = calendar.day_name[curdate.tm_wday]
+    docdate['r_dayname']['desc'] = 'Full name of the day'
+    docdate['r_dayname']['val'] = calendar.day_name[curdate.tm_wday]
 
     docdate['r_daynameshort'] = {}
-    docdate['r_daynameshort']['desc']   = 'Short name of the day'
-    docdate['r_daynameshort']['val']    = calendar.day_abbr[curdate.tm_wday]
+    docdate['r_daynameshort']['desc'] = 'Short name of the day'
+    docdate['r_daynameshort']['val'] = calendar.day_abbr[curdate.tm_wday]
 
     docdate['r_monthname'] = {}
-    docdate['r_monthname']['desc']      = 'Full name of the month'
-    docdate['r_monthname']['val']       = calendar.month_name[curdate.tm_mon]
+    docdate['r_monthname']['desc'] = 'Full name of the month'
+    docdate['r_monthname']['val'] = calendar.month_name[curdate.tm_mon]
 
     docdate['r_monthnameshort'] = {}
     docdate['r_monthnameshort']['desc'] = 'Short name of the month'
-    docdate['r_monthnameshort']['val']  = calendar.month_abbr[curdate.tm_mon]
+    docdate['r_monthnameshort']['val'] = calendar.month_abbr[curdate.tm_mon]
 
     docdate['r_weekday'] = {}
-    docdate['r_weekday']['desc']        = 'Day number in week.'
-    docdate['r_weekday']['val']         = str(curdate.tm_wday + 1)
+    docdate['r_weekday']['desc'] = 'Day number in week.'
+    docdate['r_weekday']['val'] = str(curdate.tm_wday + 1)
 
     docdate['r_yearday'] = {}
-    docdate['r_yearday']['desc']        = 'Day number in year'
-    docdate['r_yearday']['val']         = str(curdate.tm_yday)
+    docdate['r_yearday']['desc'] = 'Day number in year'
+    docdate['r_yearday']['val'] = str(curdate.tm_yday)
 
     docdate['r_weekno'] = {}
-    docdate['r_weekno']['desc']         = 'ISO 8601 week number'
-    docdate['r_weekno']['val']          = str(time.strftime('%V', curdate))
+    docdate['r_weekno']['desc'] = 'ISO 8601 week number'
+    docdate['r_weekno']['val'] = str(time.strftime('%V', curdate))
 
     docdate['r_epoch'] = {}
-    docdate['r_epoch']['desc']          = 'Time in epoch (from date)'
-    docdate['r_epoch']['val']           = str(calendar.timegm(curdate))
+    docdate['r_epoch']['desc'] = 'Time in epoch (from date)'
+    docdate['r_epoch']['val'] = str(calendar.timegm(curdate))
 
     docdate['r_tz'] = {}
-    docdate['r_tz']['desc']             = 'Timezone (CET or CEST)'
+    docdate['r_tz']['desc'] = 'Timezone (CET or CEST)'
     docdate['r_tzlong'] = {}
-    docdate['r_tzlong']['desc']         = 'Timezone long format'
+    docdate['r_tzlong']['desc'] = 'Timezone long format'
     docdate['r_tz_offset'] = {}
-    docdate['r_tz_offset']['desc']      = 'Timezone offset to UTC'
+    docdate['r_tz_offset']['desc'] = 'Timezone offset to UTC'
 
     if curdate.tm_isdst == 1:
-        docdate['r_tz']['val']         = 'CEST'
-        docdate['r_tzlong']['val']     = 'W. Europe Standard Time'
-        docdate['r_tz_offset']['val']  = '+02:00'
+        docdate['r_tz']['val'] = 'CEST'
+        docdate['r_tzlong']['val'] = 'W. Europe Standard Time'
+        docdate['r_tz_offset']['val'] = '+02:00'
     else:
-        docdate['r_tz']['val']         = 'CET'
-        docdate['r_tzlong']['val']     = 'W. Europe Time'
-        docdate['r_tz_offset']['val']  = '+01:00'
+        docdate['r_tz']['val'] = 'CET'
+        docdate['r_tzlong']['val'] = 'W. Europe Time'
+        docdate['r_tz_offset']['val'] = '+01:00'
 
     return docdate
 
