@@ -23,7 +23,8 @@ import json
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus
 
-from ansible.errors import AnsibleError
+# Import AnsibleError locally inside functions to avoid import-time issues in ansible-test
+
 from ansible.module_utils.common.text.converters import to_native
 from ansible.module_utils.connection import ConnectionError
 from ansible.module_utils.urls import open_url, SSLValidationError
@@ -149,9 +150,11 @@ def doapi(url, method, mm_provider, databody):
         except URLError as err:
             last_exception = err
             # URLError is often fatal for URL resolution; do not retry
+            from ansible.errors import AnsibleError
             raise AnsibleError("Failed lookup url for %s : %s" % (apiurl, to_native(err)))
 
         except SSLValidationError as err:
+            from ansible.errors import AnsibleError
             raise AnsibleError(
                 "Error validating the server's certificate for %s: %s"
                 % (apiurl, to_native(err))
@@ -160,6 +163,7 @@ def doapi(url, method, mm_provider, databody):
         except ConnectionError as err:
             last_exception = err
             if attempt == maxtries:
+                from ansible.errors import AnsibleError
                 raise AnsibleError("Error connecting to %s: %s" % (apiurl, to_native(err)))
             # Backoff and retry
             time.sleep(backoff)
@@ -168,6 +172,7 @@ def doapi(url, method, mm_provider, databody):
 
     # If we exhausted retries and still have an exception attached, raise
     if last_exception is not None:
+        from ansible.errors import AnsibleError
         raise AnsibleError("Failed to contact %s: %s" % (apiurl, to_native(last_exception)))
 
     # Normalize 'No Content' message
