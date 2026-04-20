@@ -11,13 +11,8 @@ Lookup plugin for finding the next free IP address in
 a network zone in the Micetro.
 """
 
-from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
-from ansible.errors import AnsibleError, AnsibleModuleError
-from ansible.module_utils.common.text.converters import to_text
-from ansible.plugins.lookup import LookupBase
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     TRUEFALSE,
 )
@@ -117,7 +112,12 @@ _list:
   description: A list containing the free IP address(es) in the network range
   fields:
     0: IP address(es)
-"""
+"""from __future__ import absolute_import, division, print_function
+from ansible.errors import AnsibleError, AnsibleModuleError
+from ansible.module_utils.common.text.converters import to_text
+from ansible.plugins.lookup import LookupBase
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+
 
 
 class LookupModule(LookupBase):

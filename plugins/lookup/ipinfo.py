@@ -11,12 +11,8 @@ Lookup plugin for finding information about an IP address
 in the Micetro.
 """
 
-from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
-from ansible.errors import AnsibleError
-from ansible.plugins.lookup import LookupBase
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
 )
 
@@ -61,7 +57,11 @@ _list:
   description: A dict containing all results
   fields:
     0: IP address(es)
-"""
+"""from __future__ import absolute_import, division, print_function
+from ansible.errors import AnsibleError
+from ansible.plugins.lookup import LookupBase
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+
 
 
 class LookupModule(LookupBase):

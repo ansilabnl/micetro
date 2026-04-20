@@ -13,18 +13,11 @@ Inventory plugin for finding all hosts in an Micetro
 As this could a lot, use the 'filter' option to tune it down.
 """
 
-from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import re
-import os
-from ansible import constants as C
 
 # from ansible.module_utils.urls import urllib_error, socket, httplib
-from ansible.errors import AnsibleParserError
-from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
 )
 
@@ -401,3 +394,11 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
 
         # Clean up the inventory before returning
         self.inventory.reconcile_inventory()
+
+from __future__ import absolute_import, division, print_function
+import re
+import os
+from ansible import constants as C
+from ansible.errors import AnsibleParserError
+from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (

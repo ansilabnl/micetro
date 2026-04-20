@@ -12,17 +12,13 @@ Module to manage DHCP reservations in the Micetro
   - Set or release a DHCP reservation
 """
 
-from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 # All imports
-from ansible.module_utils.basic import AnsibleModule
 # Provide a Python 3 compatible alias for 'unicode' used in older code
-import builtins as _builtins
 unicode = getattr(_builtins, 'unicode', str)
 
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     get_single_refs,
     get_dhcp_scopes,
@@ -103,7 +99,11 @@ message:
     description: The output message from the Men&Mice System.
     type: str
     returned: always
-"""
+"""from __future__ import absolute_import, division, print_function
+from ansible.module_utils.basic import AnsibleModule
+import builtins as _builtins
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+
 
 
 def run_module():

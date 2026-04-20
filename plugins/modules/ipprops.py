@@ -11,13 +11,10 @@ Part of the Men&Mice Ansible integration
 Module to set properties on an IP addresses in the Micetro
 """
 
-from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 # All imports
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
     doapi,
     get_single_refs,
 )
@@ -79,7 +76,10 @@ message:
     description: The output message from the Men&Mice System.
     type: str
     returned: always
-"""
+"""from __future__ import absolute_import, division, print_function
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+
 
 
 def run_module():
