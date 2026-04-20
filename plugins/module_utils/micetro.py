@@ -24,7 +24,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus
 
 from ansible.errors import AnsibleError
-from ansible.module_utils._text import to_native
+from ansible.module_utils.common.text.converters import to_native
 from ansible.module_utils.connection import ConnectionError
 from ansible.module_utils.urls import open_url, SSLValidationError
 
