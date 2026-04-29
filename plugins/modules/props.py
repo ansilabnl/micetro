@@ -12,11 +12,9 @@ Module to manage custom properties in the Micetro
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports
-    doapi,
-)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: props
@@ -119,9 +117,10 @@ message:
     description: The output message from the Men&Mice System.
     type: str
     returned: always
-"""from __future__ import absolute_import, division, print_function
+"""
+
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi
 
 
 PROPTYPES = ["text", "yesno", "ipaddress", "number"]
@@ -292,7 +291,7 @@ def run_module():
 
         # Add the extra parameters when wanted
         if module.params.get("updateexisting", None):
-            databody["updateExisting"] = module.params.get("updatexisting")
+            databody["updateExisting"] = module.params.get("updateexisting")
 
     databody["saveComment"] = "Ansible API"
     result = doapi(url, http_method, mm_provider, databody)

@@ -12,9 +12,9 @@ Module to set properties on an IP addresses in the Micetro
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: ipprops
@@ -75,9 +75,8 @@ message:
     returned: always
 """
 
-from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs, getrefs
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs
 
 
 

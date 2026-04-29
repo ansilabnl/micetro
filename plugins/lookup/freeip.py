@@ -12,9 +12,9 @@ a network zone in the Micetro.
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
     lookup: freeip
@@ -42,7 +42,7 @@ DOCUMENTATION = r"""
           requested zones
         type: int
         required: False
-        default: False
+        default: 1
       claim:
         description: Claim the IP address(es) for the specified amount of time in seconds
         type: int
@@ -113,11 +113,10 @@ _list:
     0: IP address(es)
 """
 
-from __future__ import absolute_import, division, print_function
 from ansible.errors import AnsibleError, AnsibleModuleError
 from ansible.module_utils.common.text.converters import to_text
 from ansible.plugins.lookup import LookupBase
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, TRUEFALSE, getrefs, get_single_refs
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, TRUEFALSE
 
 
 
@@ -150,7 +149,7 @@ class LookupModule(LookupBase):
             networks = list(map(str.strip, terms[1]))
         multi = kwargs.get("multi", 1)
         claim = kwargs.get("claim", 0)
-        ping = TRUEFALSE[kwargs.get("ping", True)]
+        ping = TRUEFALSE[kwargs.get("ping", False)]
         excludedhcp = TRUEFALSE[kwargs.get("excludedhcp", False)]
         startaddress = kwargs.get("startaddress", "")
         ipfilter = kwargs.get("filter", "")
@@ -160,9 +159,8 @@ class LookupModule(LookupBase):
         for network in networks:
             # Get the requested network ranges
             http_method = "GET"
-            url = "Ranges"
-            databody = {"filter": network}
-            result = doapi(url, http_method, mm_provider, databody)
+            url = "Ranges?filter=%s" % network
+            result = doapi(url, http_method, mm_provider, None)
 
             # Some ranges found? If the network does not exist or when there
             # are no more IPs available an empty list is returned
@@ -172,13 +170,6 @@ class LookupModule(LookupBase):
             # Get the range reference
             ref = result["message"]["result"]["ranges"][0]["ref"]
 
-            # Build parameter list
-            databody = {}
-            databody["temporaryClaimTime"] = claim
-            databody["ping"] = ping
-            databody["excludeDHCP"] = excludedhcp
-            if startaddress:
-                databody["startAddress"] = startaddress
             url = "%s/NextFreeAddress" % ref
 
             # Collect the options
@@ -216,7 +207,7 @@ class LookupModule(LookupBase):
 
             # Get requested number of free IP addresses
             for dummy in range(multi):
-                result = doapi(url, http_method, mm_provider, databody)
+                result = doapi(url, http_method, mm_provider, None)
 
                 # If there are no more free IP Addresses, the API returns
                 # an empty result.

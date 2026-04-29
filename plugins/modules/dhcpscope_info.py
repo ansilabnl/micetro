@@ -149,7 +149,7 @@ from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
 
 
 def validate_params(module):
-    """Validate module parameters"""
+    """Validate module parameters."""
     if module.params["limit"] and module.params["limit"] < 0:
         module.fail_json(msg="limit parameter must be a positive integer")
 
@@ -289,6 +289,7 @@ def run_module():
 
 
 def main():
+    """Start here."""
     run_module()
 
 

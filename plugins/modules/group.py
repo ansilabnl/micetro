@@ -12,9 +12,9 @@ Module to manage groups in the Micetro.
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: group
@@ -86,10 +86,13 @@ message:
     description: The output message from the Micetro.
     type: str
     returned: always
-"""from __future__ import absolute_import, division, print_function
+"""
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
-
+    doapi,
+    getrefs,
+)
 
 
 def run_module():
@@ -151,12 +154,10 @@ def run_module():
         users = resp["message"]["result"]["users"]
 
     # Get list of all groups in the system
-    groups = []
-    if module.params.get("groups", None):
-        resp = getrefs("Groups", mm_provider)
-        if resp.get("warnings", None):
-            module.fail_json(msg="Collecting groups: %s" % resp.get("warnings"))
-        groups = resp["message"]["result"]["groups"]
+    resp = getrefs("Groups", mm_provider)
+    if resp.get("warnings", None):
+        module.fail_json(msg="Collecting groups: %s" % resp.get("warnings"))
+    groups = resp["message"]["result"]["groups"]
 
     # If roles are requested, get all roles
     roles = []
@@ -306,8 +307,6 @@ def run_module():
             if group_data["description"] != module.params["desc"]:
                 change = True
 
-            if change:
-                result = doapi(url, http_method, mm_provider, databody)
             result["changed"] = change
         else:
             # Group not present, create

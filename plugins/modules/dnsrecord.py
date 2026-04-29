@@ -12,9 +12,9 @@ Module to manage DNS entries for IP addresses in the Micetro
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: dnsrecord
@@ -69,10 +69,12 @@ DOCUMENTATION = r"""
                 SPF, SRV, SSHFP, TLSA, TXT
       ]
     ttl:
-      description: The Time-To-Live of the DNS record.
+      description:
+        - The Time-To-Live of the DNS record.
+        - A value of 0 means the TTL is the same as the zone TTL.
       type: int
       required: False
-      default: 0 (Same as zone)
+      default: 0
     comment:
       description:
         - Comment string for the record.
@@ -85,7 +87,7 @@ DOCUMENTATION = r"""
         - If the record is disabled the value is false
       type: bool
       required: False
-      default: False
+      default: True
     aging:
       description:
         - The aging timestamp of dynamic records in AD integrated zones.
@@ -145,7 +147,6 @@ message:
     returned: always
 """
 
-from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs
 
@@ -293,17 +294,16 @@ def run_module():
 
     # If more then one result was found
     if iparesp.get("totalResults", 1) > 1:
-        for res in iparesp["dnsRecords"]:
-            # Is it the correct record type, if not, remove it
-            if res["type"] != rrtype:
-                iparesp["dnsRecords"].remove(res)
-                iparesp["totalResults"] -= 1
+        iparesp["dnsRecords"] = [
+            res for res in iparesp["dnsRecords"] if res["type"] == rrtype
+        ]
+        iparesp["totalResults"] = len(iparesp["dnsRecords"])
 
     # If absent is requested, make a quick delete
     if module.params["state"] == "absent":
         if iparesp.get("totalResults", 1) == 0:
             # DNS record does not exist. Just return
-            result["change"] = False
+            result["changed"] = False
             module.exit_json(**result)
 
         # It does exist. Delete it
@@ -356,7 +356,7 @@ def run_module():
         result = doapi(url, http_method, mm_provider, databody)
         # When an IP address has status 'claimed', it cannot be assigned a
         # DNS record. The 'errors' field shows this.
-        if result["message"]["result"]["errors"]:
+        if result.get("message", {}).get("result", {}).get("errors"):
             result["warnings"] = result["message"]["result"]["errors"]
             result.pop("message", None)
     else:

@@ -12,9 +12,9 @@ in the Micetro.
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
     lookup: ipinfo
@@ -57,11 +57,11 @@ _list:
   description: A dict containing all results
   fields:
     0: IP address(es)
-"""from __future__ import absolute_import, division, print_function
+"""
+
 from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
-
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi
 
 
 class LookupModule(LookupBase):
@@ -76,7 +76,7 @@ class LookupModule(LookupBase):
         # Sufficient parameters
         if len(terms) < 2:
             raise AnsibleError(
-                "Insufficient parameters. Need at least: mm_url, mm_user, mm_password and IPAddress."
+                "Insufficient parameters. Need at least: mm_provider and ipaddress."
             )
 
         # Get the parameters
@@ -94,5 +94,5 @@ class LookupModule(LookupBase):
             raise AnsibleError(result.get("warnings"))
 
         if isinstance(result, dict):
-            return result["message"]["result"]["ipamRecord"]
-        return result
+            return [result["message"]["result"]["ipamRecord"]]
+        return [result]

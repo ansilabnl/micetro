@@ -12,9 +12,9 @@ Module to manage DNS-Zones in the Micetro
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: zone
@@ -67,7 +67,7 @@ DOCUMENTATION = r"""
       type: list
       elements: str
       required: False
-    adintegrated:
+    adintegrate:
       description: True if the zone is Active Directory integrated.
       type: bool
       required: False
@@ -122,9 +122,8 @@ message:
     returned: always
 """
 
-from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs, getrefs, get_dhcp_scopes
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs
 
 
 
@@ -220,7 +219,7 @@ def run_module():
     if module.params["state"] == "absent":
         if resp.get("totalResults", 1) == 0:
             # Zone does not exist. Just return
-            result["change"] = False
+            result["changed"] = False
             module.exit_json(**result)
 
         http_method = "DELETE"
@@ -240,9 +239,9 @@ def run_module():
         #   `dynamicname` is read-only, so not in the call
         #   `authority`   is read-only, so not in the call
         http_method = "PUT"
-        url = "%s" % resp["dnsZone"]["ref"]
+        url = "%s" % resp["dnsZones"][0]["ref"]
         databody = {
-            "ref": resp["dnsZone"]["ref"],
+            "ref": resp["dnsZones"][0]["ref"],
             "saveComment": "Ansible API",
             "properties": [
                 {"name": "type", "value": module.params["servtype"]}
@@ -252,11 +251,11 @@ def run_module():
         masters = module.params.get("masters", None)
         if module.params["servtype"] not in ["Primary", "Master"] and masters is not None:
             databody["properties"].append({"name": "masters", "value": masters})
-        if module.params.get("adIntegrated"):
+        if module.params.get("adintegrate"):
             databody["properties"].append(
                 {
                     "name": "adIntegrated",
-                    "value": module.params.get("adintegrated"),
+                    "value": module.params.get("adintegrate"),
                 }
             )
         if module.params.get("adreplicationtype"):
@@ -287,10 +286,10 @@ def run_module():
 
             # Check if it is in the current values, either in the "normal" set or
             # the custom properties
-            cur = resp["dnsZone"].get(name, None)
+            cur = resp["dnsZones"][0].get(name, None)
             if not cur:
                 # Not found yet, try custumprops
-                cur = resp["dnsZone"]["customProperties"].get(name, None)
+                cur = resp["dnsZones"][0]["customProperties"].get(name, None)
 
             # Check if it is in the current values
             if val != cur:
@@ -318,9 +317,9 @@ def run_module():
         masters = module.params.get("masters", None)
         if module.params["servtype"] not in ["Primary", "Master"] and masters is not None:
             databody["masters"] = masters
-        if module.params.get("adintegrated"):
+        if module.params.get("adintegrate"):
             databody["dnsZone"]["adIntegrated"] = module.params.get(
-                "adintegrated"
+                "adintegrate"
             )
         if module.params.get("adreplicationtype"):
             databody["dnsZone"]["adReplicationtype"] = module.params.get(

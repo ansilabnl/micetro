@@ -12,9 +12,9 @@ Module to claim IP addresses in DHCP in the Micetro
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports (moved below RETURN per Ansible validate-modules)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: claimip
@@ -62,7 +62,7 @@ EXAMPLES = r"""
 
 - name: Release claim on IP addresses
   ansilabnl.micetro.claimip:
-    state: present
+    state: absent
     ipaddress:
       - 172.16.12.14
       - 172.16.12.15
@@ -81,9 +81,8 @@ message:
     returned: always
 """
 
-from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs, getrefs
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi, get_single_refs
 
 
 STATEBOOL = {"present": True, "absent": False}

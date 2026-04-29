@@ -12,12 +12,9 @@ Module to manage users in the Micetro.
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports
-    doapi,
-    getrefs,
-)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: user
@@ -51,8 +48,12 @@ DOCUMENTATION = r"""
         - Required if I(state=present).
       type: str
       required: False
-    descr:
+    desc:
       description: Description of the user.
+      required: False
+      type: str
+    full_name:
+      description: Full name of the user.
       required: False
       type: str
     email:
@@ -115,10 +116,13 @@ message:
     description: The output message from the Micetro.
     type: str
     returned: always
-"""from __future__ import absolute_import, division, print_function
+"""
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
-
+    doapi,
+    getrefs,
+)
 
 
 def run_module():
@@ -177,9 +181,9 @@ def run_module():
 
     # Get list of all users in the system
     resp = getrefs("Users", mm_provider)
-    users = resp["message"]["result"]["users"]
     if resp.get("warnings", None):
         module.fail_json(msg="Collecting users: %s" % resp.get("warnings"))
+    users = resp["message"]["result"]["users"]
 
     # If groups are requested, get all groups
     if module.params["groups"]:

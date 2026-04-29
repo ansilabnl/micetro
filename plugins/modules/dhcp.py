@@ -13,16 +13,9 @@ Module to manage DHCP reservations in the Micetro
 """
 
 
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
-
-# All imports
-# Provide a Python 3 compatible alias for 'unicode' used in older code
-unicode = getattr(_builtins, 'unicode', str)
-
-    doapi,
-    get_single_refs,
-    get_dhcp_scopes,
-)
 
 DOCUMENTATION = r"""
   module: dhcp
@@ -99,11 +92,14 @@ message:
     description: The output message from the Men&Mice System.
     type: str
     returned: always
-"""from __future__ import absolute_import, division, print_function
-from ansible.module_utils.basic import AnsibleModule
-import builtins as _builtins
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+"""
 
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
+    doapi,
+    get_single_refs,
+    get_dhcp_scopes,
+)
 
 
 def run_module():
@@ -170,7 +166,7 @@ def run_module():
 
         scopes = get_dhcp_scopes(mm_provider, ipaddress)
         if not scopes:
-            errormsg = "No DHCP scope for IP address %s", ipaddress
+            errormsg = "No DHCP scope for IP address %s" % ipaddress
             module.fail_json(msg=errormsg)
 
         if resp["ipamRecord"]["dhcpReservations"]:
@@ -221,9 +217,7 @@ def run_module():
                     for key in databody["properties"]:
                         name = key["name"]
                         val = key["value"]
-                        if name == "addresses" and isinstance(
-                            val, (str, unicode)
-                        ):
+                        if name == "addresses" and isinstance(val, str):
                             val = [val]
 
                         # Check if it is in the current values
@@ -247,7 +241,7 @@ def run_module():
             if module.params["state"] == "present":
                 # If IP address is a string, turn it into a list, as the API
                 # requires that
-                if isinstance(ipaddress, (str, unicode)):
+                if isinstance(ipaddress, str):
                     ipaddress = [ipaddress]
 
                 # No reservation found. Create one. Try this in each scope.

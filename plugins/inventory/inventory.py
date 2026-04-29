@@ -14,8 +14,16 @@ As this could a lot, use the 'filter' option to tune it down.
 """
 
 
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
+import re
+import os
+from ansible import constants as C
+from ansible.errors import AnsibleParserError
+from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable
+from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi
 
 # from ansible.module_utils.urls import urllib_error, socket, httplib
 
@@ -145,11 +153,6 @@ def _sanitize(data):
 
     return data
 
-
-from ansible import constants as C
-from ansible.errors import AnsibleParserError
-from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import doapi
 
 class InventoryModule(BaseInventoryPlugin, Cacheable):
     """Extend the Inventory class."""
@@ -302,8 +305,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
                     # Apply filters, if requested. No filter means filters == None
                     if filters:
                         for f in filters:
-                            # Is the property in the filter and a wanted value
-                            add_host = f.get(custprop, None) == custval
+                            # All filters are ANDed together
+                            add_host = add_host and (f.get(custprop, None) == custval)
 
                     # If filter wants this host, add the custom group
                     if add_host:
@@ -397,11 +400,3 @@ class InventoryModule(BaseInventoryPlugin, Cacheable):
 
         # Clean up the inventory before returning
         self.inventory.reconcile_inventory()
-
-from __future__ import absolute_import, division, print_function
-import re
-import os
-from ansible import constants as C
-from ansible.errors import AnsibleParserError
-from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable
-from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (

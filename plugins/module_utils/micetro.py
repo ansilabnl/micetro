@@ -192,7 +192,7 @@ def get_single_refs(objname, mm_provider):
         resp["invalid"] = True
         return resp
 
-    return "Unknown error"
+    return {"invalid": True, "warnings": "Unknown error"}
 
 
 def get_dhcp_scopes(mm_provider, ipaddress):

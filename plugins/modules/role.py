@@ -12,12 +12,9 @@ Module to manage roles in the Micetro.
 """
 
 
-__metaclass__ = type
+from __future__ import absolute_import, division, print_function
 
-# All imports
-    doapi,
-    getrefs,
-)
+__metaclass__ = type
 
 DOCUMENTATION = r"""
   module: role
@@ -89,10 +86,13 @@ message:
     description: The output message from the Micetro.
     type: str
     returned: always
-"""from __future__ import absolute_import, division, print_function
+"""
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansilabnl.micetro.plugins.module_utils.micetro import (
-
+    doapi,
+    getrefs,
+)
 
 
 def run_module():
@@ -306,8 +306,6 @@ def run_module():
             if role_data["description"] != module.params["desc"]:
                 change = True
 
-            if change:
-                result = doapi(url, http_method, mm_provider, databody)
             result["changed"] = change
         else:
             # Role not present, create
